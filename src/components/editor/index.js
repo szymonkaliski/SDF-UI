@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-export default class Editor extends Component {
+class Editor extends Component {
   render() {
-    return <div>Editor</div>
+    console.log(this.props);
+
+    return <div>
+      Editor
+    </div>;
   }
 }
 
+export default connect(({ graph }) => graph)(Editor);
