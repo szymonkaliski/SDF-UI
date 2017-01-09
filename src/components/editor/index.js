@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import NodeGraph from './node-graph';
+
 class Editor extends Component {
   render() {
-    console.log(this.props);
-
-    return <div>
-      Editor
-    </div>;
+    return <NodeGraph nodes={ this.props.nodes }/>
   }
 }
 
