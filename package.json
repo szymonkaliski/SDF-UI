@@ -8,6 +8,7 @@
   "dependencies": {
     "gl-react": "^3.0.0-alpha1",
     "gl-react-dom": "^3.0.0-alpha1",
+    "immutable": "^3.8.1",
     "lodash.map": "^4.6.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",

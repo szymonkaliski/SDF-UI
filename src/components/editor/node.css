@@ -1,3 +1,7 @@
 .node {
   position: absolute;
+
+  width: 120px;
+  height: 80px;
+  border: 1px solid black;
 }
