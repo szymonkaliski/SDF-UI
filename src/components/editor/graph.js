@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import Node from './node';
 import { moveNode } from '../../actions/graph';
 
-import Node from './node';
+import './editor.css';
 
 class Graph extends Component {
   render() {
-    return <div>
+    return <div className='editor'>
       {
         this.props.nodes.valueSeq().map(node => {
           return <Node

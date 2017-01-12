@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import nodes from '../../engine/nodes';
+
 import './node.css';
 
 export default class Node extends Component {
@@ -23,7 +25,7 @@ export default class Node extends Component {
 
   onMouseDown(e) {
     this.clickX = e.clientX - this.props.x;
-    this.clickY = e.clientX - this.props.x;
+    this.clickY = e.clientY - this.props.y;
 
     window.addEventListener('mousemove', this.onDrag);
     window.addEventListener('mouseup', this.onMouseUp);
@@ -37,14 +39,42 @@ export default class Node extends Component {
     this.clickY = 0;
   }
 
+  renderInlets() {
+    const { type }   = this.props;
+    const { inlets } = nodes[type].spec;
+
+    return <div className='node__inlets'>
+      {
+        inlets.map(inlet => {
+          return <div key={ inlet.id } className='node__inlet'>
+            { inlet.id }
+          </div>
+        })
+      }
+    </div>;
+  }
+
+  renderOutlets() {
+    return <div className='node__outlets'>
+      <div className='node__outlet'>
+        p
+      </div>
+    </div>;
+  }
+
   render() {
     const { x, y, type } = this.props;
 
-    return <div
-      className='node'
-      onMouseDown={ this.onMouseDown }
-      style={{ top: y, left: x }}>
-      { type }
+    return <div className='node__wrapper' style={{ top: y, left: x }}>
+      { this.renderInlets() }
+
+      <div className='node' onMouseDown={ this.onMouseDown }>
+        <div className='node__content'>
+          { type }
+        </div>
+      </div>
+
+      { this.renderOutlets() }
     </div>;
   }
 }
