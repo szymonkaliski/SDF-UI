@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import nodes from '../../engine/nodes';
+import nodeSpecs from '../../engine/nodes';
 
 import './node.css';
 
@@ -41,7 +41,7 @@ export default class Node extends Component {
 
   renderInlets() {
     const { type }   = this.props;
-    const { inlets } = nodes[type].spec;
+    const { inlets } = nodeSpecs[type].spec;
 
     return <div className='node__inlets'>
       {

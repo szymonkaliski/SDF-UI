@@ -4,11 +4,9 @@ import { connect } from 'react-redux';
 import Node from './node';
 import { moveNode } from '../../actions/graph';
 
-import './editor.css';
-
-class Graph extends Component {
+class Nodes extends Component {
   render() {
-    return <div className='editor'>
+    return <div>
       {
         this.props.nodes.valueSeq().map(node => {
           return <Node
@@ -28,4 +26,4 @@ const mapDispatchToProps = (dispatch) => ({
   moveNode: (id, pos) => dispatch(moveNode(id, pos))
 });
 
-export default connect(null, mapDispatchToProps)(Graph);
+export default connect(null, mapDispatchToProps)(Nodes);
