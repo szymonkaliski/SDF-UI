@@ -11,32 +11,69 @@ export default class Node extends Component {
   constructor() {
     super();
 
-    this.onMouseDown = this.onMouseDown.bind(this);
-    this.onMouseUp   = this.onMouseUp.bind(this);
-    this.onDrag      = this.onDrag.bind(this);
+    this.inletsDivs = {};
+
+    this.onMouseDown       = this.onMouseDown.bind(this);
+    this.onMouseDownNode   = this.onMouseDownNode.bind(this);
+    this.onMouseDownOutlet = this.onMouseDownOutlet.bind(this);
   }
 
-  onDrag(e) {
-    this.props.onMove({
-      x: e.clientX - this.clickX,
-      y: e.clientY - this.clickY
-    });
+  componentDidMount() {
+    const { x, y } = this.props;
+
+    const inletsPositions = Object.keys(this.inletsDivs).reduce((memo, key) => {
+      const rect = this.inletsDivs[key].getBoundingClientRect();
+
+      return Object.assign(memo, {
+        [key]: {
+          x: rect.left - x + rect.width / 2,
+          y: rect.top  - y
+        }
+      });
+    }, {});
+
+    this.props.setInletsPositions(inletsPositions);
   }
 
-  onMouseDown(e) {
+  onMouseDown(e, callbacks) {
     this.clickX = e.clientX - this.props.x;
     this.clickY = e.clientY - this.props.y;
 
-    window.addEventListener('mousemove', this.onDrag);
-    window.addEventListener('mouseup', this.onMouseUp);
+    const onDrag = (e) => {
+      callbacks.onDrag({
+        relative: {
+          x: e.clientX - this.clickX,
+          y: e.clientY - this.clickY
+        },
+        absolute: {
+          x: e.clientX,
+          y: e.clientY
+        }
+      });
+    };
+
+    const onUp = () => {
+      window.removeEventListener('mousemove', onDrag);
+      window.removeEventListener('mouseup', onUp);
+
+      if (callbacks.onUp) { callbacks.onUp(); }
+    };
+
+    window.addEventListener('mousemove', onDrag);
+    window.addEventListener('mouseup', onUp);
   }
 
-  onMouseUp() {
-    window.removeEventListener('mousemove', this.onDrag);
-    window.removeEventListener('mouseup', this.onMouseUp);
+  onMouseDownNode(e) {
+    this.onMouseDown(e, {
+      onDrag: ({ relative }) => { this.props.onMove(relative); }
+    });
+  }
 
-    this.clickX = 0;
-    this.clickY = 0;
+  onMouseDownOutlet(e) {
+    this.onMouseDown(e, {
+      onDrag: ({ absolute }) => { this.props.onDragEdge(absolute); },
+      onUp:   () => { this.props.onDragEdgeDone(); }
+    });
   }
 
   renderInlets() {
@@ -46,7 +83,10 @@ export default class Node extends Component {
     return <div className='node__inlets'>
       {
         inlets.map(inlet => {
-          return <div key={ inlet.id } className='node__inlet'>
+          return <div
+            key={ inlet.id }
+            className='node__inlet'
+            ref={ (ref) => this.inletsDivs[inlet.id] = ref }>
             { inlet.id }
           </div>
         })
@@ -56,7 +96,7 @@ export default class Node extends Component {
 
   renderOutlets() {
     return <div className='node__outlets'>
-      <div className='node__outlet'>
+      <div className='node__outlet' onMouseDown={ this.onMouseDownOutlet }>
         p
       </div>
     </div>;
@@ -68,7 +108,7 @@ export default class Node extends Component {
     return <div className='node__wrapper' style={{ top: y, left: x }}>
       { this.renderInlets() }
 
-      <div className='node' onMouseDown={ this.onMouseDown }>
+      <div className='node' onMouseDown={ this.onMouseDownNode }>
         <div className='node__content'>
           { type }
         </div>
