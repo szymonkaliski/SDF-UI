@@ -75,7 +75,7 @@ export default (state = initialState, action) => {
         .sortBy(inlet => inlet.get('dist'))
         .first();
 
-      const maxDist = 20;
+      const maxDist = 40;
 
       if (nearestInlet.get('dist') < maxDist) {
         const edge = fromJS({

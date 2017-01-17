@@ -9,10 +9,10 @@ export default generateNode({
     outlet: { id: 'dist', type: 'float' }
   },
 
-  generate: ({ union1, union2 }) => {
+  generate: ({ dist1, dist2 }) => {
     return `opUnionRound(
-      ${union1},
-      ${union2}
+      ${dist1},
+      ${dist2}
     )`;
   }
 });

@@ -9,7 +9,7 @@ export default generateNode({
     outlet: { id: 'dist', type: 'float' }
   },
 
-  generate: ({ p, pos, r }) => {
-    return `sdSphere(${p}, ${pos}, ${r})`;
+  generate: ({ p, r }) => {
+    return `sdSphere(${p}, ${r})`;
   }
 });

@@ -6,6 +6,6 @@ export default generateNode({
   },
 
   generate: () => {
-    return ``;
+    return 'p';
   }
 });

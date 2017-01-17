@@ -12,6 +12,12 @@ export default function generateSDFFragment(doModel) {
       return min(max(d.x, max(d.y, d.z)), 0.0) + length(max(d, 0.0));
     }
 
+    float sdSphere(vec3 p, float f) {
+      vec3 b = vec3(0.1);
+      vec3 d = abs(p) - b;
+      return min(max(d.x, max(d.y, d.z)), 0.0) + length(max(d, 0.0));
+    }
+
     vec2 doModel(vec3 p) {
       return vec2(${doModel}, 0.0);
     }
