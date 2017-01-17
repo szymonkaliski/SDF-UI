@@ -82,7 +82,7 @@ export default class Node extends Component {
 
     return <div className='node__inlets'>
       {
-        inlets.map(inlet => {
+        inlets && inlets.map(inlet => {
           return <div
             key={ inlet.id }
             className='node__inlet'
@@ -95,10 +95,15 @@ export default class Node extends Component {
   }
 
   renderOutlets() {
+    const { type }   = this.props;
+    const { outlet } = nodeSpecs[type].spec;
+
     return <div className='node__outlets'>
-      <div className='node__outlet' onMouseDown={ this.onMouseDownOutlet }>
-        p
-      </div>
+      {
+        outlet && <div className='node__outlet' onMouseDown={ this.onMouseDownOutlet }>
+          { outlet.id }
+        </div>
+      }
     </div>;
   }
 

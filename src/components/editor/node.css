@@ -13,7 +13,7 @@
 }
 
 .node__content {
-  padding-top: 30px;
+  padding-top: 34px;
 }
 
 .node__inlets {
@@ -30,8 +30,8 @@
   float: left;
 
   color: #909090;
-  width: 22px;
-  margin-left: 0px;
+  width: 30px;
+  margin-left: -10px;
   transform: rotate(90deg);
   text-transform: uppercase;
   font-size: 11px;
@@ -50,5 +50,5 @@
 
 .node__inlet:first-child,
 .node__outlet:first-child {
-  margin-left: -5px;
+  margin-left: -9px;
 }

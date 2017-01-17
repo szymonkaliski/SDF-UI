@@ -2,9 +2,11 @@ import { fromJS } from 'immutable';
 
 const initialState = fromJS({
   nodes: {
-    n001: { id: 'n001', x: 80,  y: 580, type: 'opUnionRound' },
-    n002: { id: 'n002', x: 350, y: 180, type: 'sdSphere'     },
-    n003: { id: 'n003', x: 100, y: 230, type: 'sdSphere'     }
+    n000: { id: 'n000', x: 220, y: 100, type: 'input'        },
+    n001: { id: 'n001', x: 180, y: 580, type: 'opUnionRound' },
+    n002: { id: 'n002', x: 350, y: 280, type: 'sdSphere'     },
+    n003: { id: 'n003', x: 100, y: 330, type: 'sdSphere'     },
+    n004: { id: 'n004', x: 260, y: 830, type: 'output'       }
   },
   edges: {}
 });
