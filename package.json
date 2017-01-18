@@ -6,6 +6,7 @@
     "react-scripts": "0.8.4"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "gl-react": "^3.0.0-alpha1",
     "gl-react-dom": "^3.0.0-alpha1",
     "immutable": "^3.8.1",

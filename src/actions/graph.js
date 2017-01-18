@@ -21,3 +21,10 @@ export const setInletsPositions = (id, inletsPositions) => ({
   id,
   inletsPositions
 });
+
+export const addNode = (nodeType, { x, y }) => ({
+  type: 'ADD_NODE',
+  nodeType,
+  x,
+  y
+});

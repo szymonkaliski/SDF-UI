@@ -1,0 +1,21 @@
+.new_node {
+  position: absolute;
+}
+
+.new_node__input,
+.new_node__input:focus {
+  padding: 6px;
+  background: #606060;
+  border: 2px solid #909090;
+  outline: none;
+}
+
+.new_node__opt {
+  padding: 6px;
+  color: #1b1b1b;
+  background: #909090;
+}
+
+.new_node__opt--selected {
+  background: #606060;
+}

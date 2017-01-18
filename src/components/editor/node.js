@@ -4,7 +4,7 @@ import nodeSpecs from '../../engine/nodes';
 
 import './node.css';
 
-export default class Node extends Component {
+export default class EditorNode extends Component {
   clickX = 0;
   clickY = 0;
 

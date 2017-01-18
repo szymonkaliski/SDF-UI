@@ -108,5 +108,13 @@ export default (state = initialState, action) => {
     state = state.mergeIn([ 'nodes', id, 'inletsPositions' ], fromJS(inletsWithIds));
   }
 
+  if (action.type === 'ADD_NODE') {
+    const { nodeType, x, y } = action;
+
+    const id = randomId();
+
+    state = state.setIn([ 'nodes', id ], fromJS({ id, x, y, type: nodeType }));
+  }
+
   return state;
 };
