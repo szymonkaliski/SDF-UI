@@ -10,7 +10,7 @@ export default generateNode({
   },
 
   generate: ({ dist1, dist2 }) => {
-    return `opUnionRound(
+    return `min(
       ${dist1},
       ${dist2}
     )`;

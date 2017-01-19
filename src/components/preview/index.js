@@ -40,10 +40,11 @@ class Preview extends Component {
     const compiled = compileGraph({ nodes, edges });
 
     if (compiled) {
-      console.log(compiled);
-
       const frag = generateSDFFragment(compiled);
       const shaders = Shaders.create({ sdf: { frag } });
+
+      console.log(compiled);
+      console.log(frag);
 
       return <Surface width={ width } height={ height }>
         <Node shader={ shaders.sdf } uniforms={{ width, height }}/>

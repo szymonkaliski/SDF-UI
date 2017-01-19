@@ -38,6 +38,11 @@ if (isDebug) {
   catch (e) {
     console.error(e);
   }
+
+  window.clearGraph = () => {
+    localStorage.setItem('state', null);
+    window.location.reload();
+  }
 }
 
 const initialState = parsed ? fromJS(parsed) : fromJS({ nodes: {}, edges: {} });

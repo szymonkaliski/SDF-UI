@@ -7,20 +7,64 @@ export default function generateSDFFragment(doModel) {
 
     const int SDF_STEPS = 50;
 
+    // DEFS
+
     float sdBox(vec3 p, vec3 b) {
       vec3 d = abs(p) - b;
       return min(max(d.x, max(d.y, d.z)), 0.0) + length(max(d, 0.0));
     }
 
-    float sdSphere(vec3 p, float f) {
-      vec3 b = vec3(0.1);
-      vec3 d = abs(p) - b;
-      return min(max(d.x, max(d.y, d.z)), 0.0) + length(max(d, 0.0));
+    float sdSphere(vec3 p, float s) {
+      return length(p) - s;
     }
+
+    float sdCone(vec3 p, vec3 c) {
+      vec2 q = vec2(length(p.xz), p.y);
+      float d1 = -p.y - c.z;
+      float d2 = max(dot(q, c.xy), p.y);
+
+      return length(max(vec2(d1, d2), 0.0)) + min(max(d1, d2), 0.);
+    }
+
+    float sdCapsule(vec3 p, vec3 a, vec3 b, float r) {
+      vec3 pa = p - a;
+      vec3 ba = b - a;
+
+      float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
+
+      return length(pa - ba * h) - r;
+    }
+
+    float sdCylinder(vec3 p, float r, float h) {
+      vec2 d = abs(vec2(length(p.xz), p.y)) - vec2(r, h);
+
+      return min(max(d.x, d.y), 0.0) + length(max(d, 0.0));
+    }
+
+    float sdHex(vec3 p, float r, float h) {
+      vec3 q = abs(p);
+
+      return max(q.z - h, max((q.x * 0.866025 + q.y * 0.5), q.y) - r);
+    }
+
+    float sdTorus(vec3 p, float r, float d) {
+      vec2 q = vec2(length(p.xz) - r, p.y);
+
+      return length(q) - d;
+    }
+
+    float sdTriangle(vec3 p, float r, float d) {
+      vec3 q = abs(p);
+      return max(q.z - d, max(q.x * 0.866025 + p.y * 0.5, -p.y) - r * 0.5);
+    }
+
+    // MODEL
 
     vec2 doModel(vec3 p) {
       return vec2(${doModel}, 0.0);
     }
+
+    // HELPERS
 
     vec2 calcRayIntersection(vec3 rayOrigin, vec3 rayDir, float maxd, float precis) {
       float latest = precis * 2.0;
@@ -56,9 +100,9 @@ export default function generateSDFFragment(doModel) {
       const vec3 v4 = vec3( 1.0,  1.0,  1.0);
 
       return normalize(v1 * doModel(pos + v1 * eps).x +
-                      v2 * doModel(pos + v2 * eps).x +
-                      v3 * doModel(pos + v3 * eps).x +
-                      v4 * doModel(pos + v4 * eps).x);
+                       v2 * doModel(pos + v2 * eps).x +
+                       v3 * doModel(pos + v3 * eps).x +
+                       v4 * doModel(pos + v4 * eps).x);
     }
 
     vec3 normal(vec3 pos) {
@@ -110,11 +154,11 @@ export default function generateSDFFragment(doModel) {
     }
 
     vec3 lighting(vec3 pos, vec3 nor, vec3 ro, vec3 rd) {
-      vec3 dir = normalize(vec3(-5.0, 5.0, 5.0));
-      vec3 col = vec3(0.97);
+      vec3 dir = normalize(vec3(-15.0, 15.0, 15.0));
+      vec3 col = vec3(0.92);
       vec3 dif = col * max(0.0, dot(dir, nor));
 
-      vec3 ambient = vec3(0.16);
+      vec3 ambient = vec3(0.06);
 
       return dif + ambient;
     }
@@ -123,9 +167,9 @@ export default function generateSDFFragment(doModel) {
       vec3 color = vec3(0.0);
       vec3 ro, rd;
 
-      float camRotation = -3.14 / 4.0;
-      float camHeight   = 1.5;
-      float camDist     = 1.5;
+      float camRotation = -3.1415 / 4.0;
+      float camHeight   = 3.0;
+      float camDist     = 3.0;
 
       orbitCamera(camRotation, camHeight, camDist, vec2(width, height), ro, rd);
 

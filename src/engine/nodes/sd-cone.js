@@ -4,12 +4,12 @@ export default generateNode({
   spec: {
     inlets: [
       { id: 'p', type: 'vec3', value: 'vec3(0.0)' },
-      { id: 'r', type: 'float', value: '0.66' }
+      { id: 'c', type: 'vec3', value: 'vec3(1.0, 0.5, 1.0)' }
     ],
     outlet: { id: 'dist', type: 'float' }
   },
 
-  generate: ({ p, r }) => {
-    return `sdSphere(${p}, ${r})`;
+  generate: ({ p, c }) => {
+    return `sdCone(${p}, ${c})`;
   }
 });
