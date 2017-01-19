@@ -1,15 +1,15 @@
 import { fromJS } from 'immutable';
 
-const initialState = fromJS({
-  nodes: {
-    n000: { id: 'n000', x: 220, y: 100, type: 'input'        },
-    n001: { id: 'n001', x: 180, y: 580, type: 'opUnionRound' },
-    n002: { id: 'n002', x: 350, y: 280, type: 'sdSphere'     },
-    n003: { id: 'n003', x: 100, y: 330, type: 'sdSphere'     },
-    n004: { id: 'n004', x: 260, y: 830, type: 'output'       }
-  },
-  edges: {}
-});
+// let initialState = fromJS({
+//   nodes: {
+//     // n000: { id: 'n000', x: 220, y: 100, type: 'input'        },
+//     // n001: { id: 'n001', x: 180, y: 580, type: 'opUnionRound' },
+//     // n002: { id: 'n002', x: 350, y: 280, type: 'sdSphere'     },
+//     // n003: { id: 'n003', x: 100, y: 330, type: 'sdSphere'     },
+//     // n004: { id: 'n004', x: 260, y: 830, type: 'output'       }
+//   },
+//   edges: {}
+// });
 
 const distVec = (a, b) => {
   const xd = a.get('x') - b.get('x');
@@ -26,6 +26,21 @@ const addVec = (a, b) => {
 };
 
 const randomId = () => `${(new Date()).getTime()}`;
+
+const isDebug = window.location.search.indexOf('debug') >= 0;
+
+let parsed;
+
+if (isDebug) {
+  try {
+    parsed = JSON.parse(localStorage.getItem('state'));
+  }
+  catch (e) {
+    console.error(e);
+  }
+}
+
+const initialState = parsed ? fromJS(parsed) : fromJS({ nodes: {}, edges: {} });
 
 export default (state = initialState, action) => {
   if (action.type === 'MOVE_NODE') {
@@ -114,6 +129,10 @@ export default (state = initialState, action) => {
     const id = randomId();
 
     state = state.setIn([ 'nodes', id ], fromJS({ id, x, y, type: nodeType }));
+  }
+
+  if (isDebug && state) {
+    localStorage.setItem('state', JSON.stringify(state.toJS()));
   }
 
   return state;
