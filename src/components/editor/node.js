@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
+import enhanceWithClickOutside from 'react-click-outside';
 
 import nodeSpecs from '../../engine/nodes';
 
 import './node.css';
 
-export default class EditorNode extends Component {
+class EditorNode extends Component {
   clickX = 0;
   clickY = 0;
 
@@ -13,9 +15,12 @@ export default class EditorNode extends Component {
 
     this.inletsDivs = {};
 
+    this.state = { selected: false };
+
     this.onMouseDown       = this.onMouseDown.bind(this);
     this.onMouseDownNode   = this.onMouseDownNode.bind(this);
     this.onMouseDownOutlet = this.onMouseDownOutlet.bind(this);
+    this.onKeyDown         = this.onKeyDown.bind(this);
   }
 
   componentDidMount() {
@@ -33,6 +38,20 @@ export default class EditorNode extends Component {
     }, {});
 
     this.props.setInletsPositions(inletsPositions);
+
+    window.addEventListener('keydown', this.onKeyDown);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.onKeyDown);
+  }
+
+  onKeyDown({ keyCode }) {
+    const { selected } = this.state;
+
+    if (selected && keyCode === 8) {
+      this.props.onDelete();
+    }
   }
 
   onMouseDown(e, callbacks) {
@@ -61,6 +80,8 @@ export default class EditorNode extends Component {
 
     window.addEventListener('mousemove', onDrag);
     window.addEventListener('mouseup', onUp);
+
+    this.setState({ selected: true });
   }
 
   onMouseDownNode(e) {
@@ -76,16 +97,21 @@ export default class EditorNode extends Component {
     });
   }
 
+  handleClickOutside() {
+    this.setState({ selected: false });
+  }
+
   renderInlets() {
-    const { type }   = this.props;
-    const { inlets } = nodeSpecs[type].spec;
+    const { selected } = this.state;
+    const { type }     = this.props;
+    const { inlets }   = nodeSpecs[type].spec;
 
     return <div className='node__inlets'>
       {
         inlets && inlets.map(inlet => {
           return <div
             key={ inlet.id }
-            className='node__inlet'
+            className={ classNames('node__inlet', { 'node__inlet--selected': selected }) }
             ref={ (ref) => this.inletsDivs[inlet.id] = ref }>
             { inlet.id }
           </div>
@@ -95,12 +121,15 @@ export default class EditorNode extends Component {
   }
 
   renderOutlets() {
-    const { type }   = this.props;
-    const { outlet } = nodeSpecs[type].spec;
+    const { selected } = this.state;
+    const { type }     = this.props;
+    const { outlet }   = nodeSpecs[type].spec;
 
     return <div className='node__outlets'>
       {
-        outlet && <div className='node__outlet' onMouseDown={ this.onMouseDownOutlet }>
+        outlet && <div
+          className={ classNames('node__outlet', { 'node__outlet--selected': selected }) }
+          onMouseDown={ this.onMouseDownOutlet }>
           { outlet.id }
         </div>
       }
@@ -108,12 +137,13 @@ export default class EditorNode extends Component {
   }
 
   render() {
+    const { selected }   = this.state;
     const { x, y, type } = this.props;
 
     return <div className='node__wrapper' style={{ top: y, left: x }}>
       { this.renderInlets() }
 
-      <div className='node' onMouseDown={ this.onMouseDownNode }>
+      <div className={ classNames('node', { 'node--selected': selected }) } onMouseDown={ this.onMouseDownNode }>
         <div className='node__content'>
           { type }
         </div>
@@ -123,3 +153,5 @@ export default class EditorNode extends Component {
     </div>;
   }
 }
+
+export default enhanceWithClickOutside(EditorNode);

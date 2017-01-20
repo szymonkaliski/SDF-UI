@@ -2,3 +2,8 @@
   stroke: #1b1b1b;
   stroke-width: 4;
 }
+
+.edge:hover,
+.edge--selected {
+  stroke: #909090;
+}

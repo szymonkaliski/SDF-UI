@@ -7,10 +7,10 @@ export default function generateSDFFragment(doModel) {
 
     const int SDF_STEPS = 50;
 
-    // DEFS
+    // SD
 
-    float sdBox(vec3 p, vec3 b) {
-      vec3 d = abs(p) - b;
+    float sdBox(vec3 p, vec3 s) {
+      vec3 d = abs(p) - s;
       return min(max(d.x, max(d.y, d.z)), 0.0) + length(max(d, 0.0));
     }
 
@@ -18,10 +18,10 @@ export default function generateSDFFragment(doModel) {
       return length(p) - s;
     }
 
-    float sdCone(vec3 p, vec3 c) {
+    float sdCone(vec3 p, vec3 s) {
       vec2 q = vec2(length(p.xz), p.y);
-      float d1 = -p.y - c.z;
-      float d2 = max(dot(q, c.xy), p.y);
+      float d1 = -p.y - s.z;
+      float d2 = max(dot(q, s.xy), p.y);
 
       return length(max(vec2(d1, d2), 0.0)) + min(max(d1, d2), 0.);
     }
@@ -56,6 +56,13 @@ export default function generateSDFFragment(doModel) {
     float sdTriangle(vec3 p, float r, float d) {
       vec3 q = abs(p);
       return max(q.z - d, max(q.x * 0.866025 + p.y * 0.5, -p.y) - r * 0.5);
+    }
+
+    // OPS
+
+    float opUnionRound(float dist1, float dist2, float r) {
+      vec2 u = max(vec2(r - dist1, r - dist2), vec2(0.0));
+      return max(r, min(dist1, dist2)) - length(u);
     }
 
     // MODEL

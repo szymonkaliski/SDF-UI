@@ -23,7 +23,7 @@ export default ({ nodes, edges }) => {
 
   // TODO: 'output', 'input', magic strings -> turn into constants?
   const outputNode = nodes.find(node => node.get('type') === 'output');
-  const outputEdge = edges.find(edge => edge.getIn([ 'to', 'id' ]) === outputNode.get('id'));
+  const outputEdge = outputNode && edges.find(edge => edge.getIn([ 'to', 'id' ]) === outputNode.get('id'));
 
   return outputEdge && createNode(outputEdge.getIn([ 'from', 'id' ])).generate();
 }

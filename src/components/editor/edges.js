@@ -1,18 +1,64 @@
 import React, { Component } from 'react';
+import classNames from 'classnames';
+import enhanceWithClickOutside from 'react-click-outside';
+import { connect } from 'react-redux';
 
 import nodeSpecs from '../../engine/nodes';
+
+import {
+  deleteEdge
+} from '../../actions/graph';
 
 import './edges.css';
 
 const prop = (key) => (obj) => obj[key];
 
-export default class Edges extends Component {
+// TODO: export Edge and Edges, same as Node and Nodes
+
+class Edges extends Component {
+  constructor() {
+    super();
+
+    this.state = { selectedId: undefined };
+
+    this.onClickEdge = this.onClickEdge.bind(this);
+    this.onKeyDown   = this.onKeyDown.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener('keydown', this.onKeyDown);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.onKeyDown);
+  }
+
+  onClickEdge(id) {
+    this.setState({ selectedId: id });
+  }
+
+  handleClickOutside() {
+    this.setState({ selectedId: undefined });
+  }
+
+  onKeyDown({ keyCode }) {
+    const { selectedId } = this.state;
+
+    if (selectedId && keyCode === 8) {
+      this.props.deleteEdge(selectedId);
+      this.setState({ selectedId: undefined });
+    }
+  }
+
   render() {
+    const { selectedId } = this.state;
     const { width, height, edges, nodes } = this.props;
 
     return <svg className='edges' width={ width } height={ height }>
       {
         edges.valueSeq().map(edge => {
+          const id = edge.get('id');
+
           const fromNode = nodes.get(edge.getIn([ 'from', 'id' ]));
 
           if (!fromNode) { return null; }
@@ -28,14 +74,15 @@ export default class Edges extends Component {
             targetX = toNode.get('x') + 12 + 34 * inletIdx;
             targetY = toNode.get('y') + 8;
           }
-          else if (edge.get('id') === 'dragging') {
+          else if (id === 'dragging') {
             targetX = edge.get('x');
             targetY = edge.get('y');
           }
 
           return <line
-            key={ edge.get('id') }
-            className='edge'
+            key={ id }
+            onClick={ () => this.onClickEdge(id) }
+            className={ classNames('edge', { 'edge--selected': selectedId === id }) }
             x1={ fromNode.get('x') + 12 }
             y1={ fromNode.get('y') + 96 }
             x2={ targetX }
@@ -46,3 +93,9 @@ export default class Edges extends Component {
     </svg>;
   }
 }
+
+const mapDispatchToProps = (dispatch) => ({
+  deleteEdge: (id) => dispatch(deleteEdge(id))
+});
+
+export default connect(null, mapDispatchToProps)(enhanceWithClickOutside(Edges));

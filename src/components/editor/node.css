@@ -12,6 +12,11 @@
   color: #909090;
 }
 
+.node--selected {
+  background: #909090;
+  color: #1b1b1b;
+}
+
 .node__content {
   padding-top: 34px;
 }
@@ -39,13 +44,15 @@
   background: #1b1b1b;
   padding: 6px;
 
-  transition: color 200ms, background 200ms;
+  /* transition: color 200ms, background 200ms; */
 }
 
+.node__inlet--selected,
+.node__outlet--selected,
 .node__inlet:hover,
 .node__outlet:hover {
-  background: #777;
-  color: #0A0A0A;
+  background: #909090;
+  color: #1b1b1b;
 }
 
 .node__inlet:first-child,

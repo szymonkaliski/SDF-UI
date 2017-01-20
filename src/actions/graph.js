@@ -5,6 +5,11 @@ export const moveNode = (id, { x, y }) => ({
   y
 });
 
+export const deleteNode = (id) => ({
+  type: 'DELETE_NODE',
+  id,
+});
+
 export const dragEdge = (id, { x, y }) => ({
   type: 'DRAG_EDGE',
   fromId: id,
@@ -27,4 +32,9 @@ export const addNode = (nodeType, { x, y }) => ({
   nodeType,
   x,
   y
+});
+
+export const deleteEdge = (id) => ({
+  type: 'DELETE_EDGE',
+  id
 });

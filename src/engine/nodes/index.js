@@ -9,6 +9,7 @@ import sdTriangle from './sd-triangle';
 
 import opDifference from './op-difference';
 import opUnion from './op-union';
+import opUnionRound from './op-union-round';
 
 import input from './input';
 import output from './output';
@@ -25,6 +26,7 @@ export default {
 
   opDifference,
   opUnion,
+  opUnionRound,
 
   input,
   output
