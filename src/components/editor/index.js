@@ -20,9 +20,10 @@ class Editor extends Component {
       mousePos: undefined
     };
 
-    this.onResize      = this.onResize.bind(this);
-    this.onDoubleClick = this.onDoubleClick.bind(this);
-    this.onAddNode     = this.onAddNode.bind(this);
+    this.onResize       = this.onResize.bind(this);
+    this.onDoubleClick  = this.onDoubleClick.bind(this);
+    this.onAddNode      = this.onAddNode.bind(this);
+    this.onCloseAddNode = this.onCloseAddNode.bind(this);
   }
 
   componentDidMount() {
@@ -53,6 +54,10 @@ class Editor extends Component {
     this.setState({ newNodePopup: false, mousePos: undefined });
   }
 
+  onCloseAddNode() {
+    this.setState({ newNodePopup: false, mousePos: undefined });
+  }
+
   render() {
     const { width, height, newNodePopup, mousePos } = this.state;
     const { edges, nodes } = this.props;
@@ -60,7 +65,13 @@ class Editor extends Component {
     return <div className='editor' onDoubleClick={ this.onDoubleClick }>
       <Edges edges={ edges } nodes={ nodes } width={ width } height={ height }/>
       <Nodes nodes={ nodes }/>
-      { newNodePopup && <NewNode pos={ mousePos } onSelectNode={ this.onAddNode }/> }
+      {
+        newNodePopup && <NewNode
+          pos={ mousePos }
+          onSelectNode={ this.onAddNode }
+          onRequestClose={ this.onCloseAddNode }
+        />
+      }
     </div>
   }
 }

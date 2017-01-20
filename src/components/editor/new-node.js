@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
+import enhanceWithClickOutside from 'react-click-outside';
 
 import nodeSpecs from '../../engine/nodes';
 
@@ -12,7 +13,7 @@ const getNodeList = (filterText) => {
     .filter(key => filterText ? key.search(filterRegex) >= 0 : true);
 };
 
-export default class NewNode extends Component {
+class NewNode extends Component {
   constructor() {
     super();
 
@@ -24,6 +25,11 @@ export default class NewNode extends Component {
     this.onChangeInput = this.onChangeInput.bind(this);
     this.onSelectNode  = this.onSelectNode.bind(this);
     this.onKeyDown     = this.onKeyDown.bind(this);
+    this.onMouseMove   = this.onMouseMove.bind(this);
+  }
+
+  handleClickOutside() {
+    this.props.onRequestClose();
   }
 
   onChangeInput(e) {
@@ -48,6 +54,17 @@ export default class NewNode extends Component {
     }
   }
 
+  onMouseMove({ clientY }) {
+
+    const yPos = clientY - this.props.pos.y;
+
+    this.setState({
+      selectedIndex: Math.floor((yPos - 32) / 24)
+    })
+
+    console.log(yPos);
+  }
+
   render() {
     const { pos } = this.props;
 
@@ -63,7 +80,7 @@ export default class NewNode extends Component {
       this.onSelectNode(nodeList[selectedIndex]);
     };
 
-    return <div className='new_node' style={{ top: pos.y, left: pos.x }}>
+    return <div className='new_node' style={{ top: pos.y, left: pos.x }} onMouseMove={ this.onMouseMove }>
       <form onSubmit={ onSubmit }>
         <input
           className='new_node__input'
@@ -87,3 +104,5 @@ export default class NewNode extends Component {
     </div>;
   }
 }
+
+export default enhanceWithClickOutside(NewNode);

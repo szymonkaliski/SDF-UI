@@ -4,14 +4,18 @@
 
 .new_node__input,
 .new_node__input:focus {
+  height: 16px;
   padding: 6px;
+
   background: #606060;
   border: 2px solid #909090;
   outline: none;
 }
 
 .new_node__opt {
+  height: 12px;
   padding: 6px;
+
   color: #1b1b1b;
   background: #909090;
 }

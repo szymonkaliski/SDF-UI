@@ -25,7 +25,7 @@ export const dragEdgeDone = (state) => {
 
   // find nearest node
   const nearestNode = state.get('nodes').minBy(compareNode => {
-    return distVec(currentDraggingEdge, compareNode);
+    return distVec(currentDraggingEdge.toJS(), compareNode.toJS());
   });
 
   // find nearest inlet of nearest node
@@ -34,8 +34,8 @@ export const dragEdgeDone = (state) => {
     .map(inletPosition => {
       return inletPosition.merge(fromJS({
         dist: distVec(
-          addVec(inletPosition, nearestNode),
-          currentDraggingEdge
+          addVec(inletPosition.toJS(), nearestNode.toJS()),
+          currentDraggingEdge.toJS()
         )
       }));
     })
