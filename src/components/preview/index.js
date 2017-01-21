@@ -64,7 +64,7 @@ const pick = (map, args) => {
 };
 
 const mapStateToProps = (state) => ({
-  nodes: state.get('nodes').map(node => pick(node, [ 'id', 'type' ])),
+  nodes: state.get('nodes').map(node => pick(node, [ 'id', 'type', 'metadata' ])),
   edges: state.get('edges').delete('dragging')
 });
 

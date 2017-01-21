@@ -1,4 +1,4 @@
-export default ({ spec, generate }) => {
+export default ({ spec, ui, generate }) => {
   class AbstractNode {
     constructor(metadata) {
       this.spec = Object.assign({ inlets: [], }, spec);
@@ -26,6 +26,7 @@ export default ({ spec, generate }) => {
   }
 
   AbstractNode.spec = spec;
+  AbstractNode.ui   = ui;
 
   return AbstractNode;
 };

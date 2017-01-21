@@ -3,8 +3,9 @@ import { fromJS } from 'immutable';
 import {
   addNode,
   moveNode,
+  deleteNode,
   setNodeInletsPositions,
-  deleteNode
+  updateNodeMetadata
 } from './nodes';
 
 import {
@@ -36,8 +37,9 @@ const initialState = parsed ? fromJS(parsed) : fromJS({ nodes: {}, edges: {} });
 const actions = {
   ADD_NODE:             addNode,
   MOVE_NODE:            moveNode,
-  SET_INLETS_POSITIONS: setNodeInletsPositions,
   DELETE_NODE:          deleteNode,
+  SET_INLETS_POSITIONS: setNodeInletsPositions,
+  UPDATE_NODE_METADATA: updateNodeMetadata,
 
   DRAG_EDGE:            dragEdge,
   DRAG_EDGE_DONE:       dragEdgeDone,

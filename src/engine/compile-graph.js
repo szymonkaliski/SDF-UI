@@ -4,7 +4,8 @@ export default ({ nodes, edges }) => {
   const createNode = (nodeId) => {
     const graphNode = nodes.get(nodeId);
 
-    const nodeInstance = new nodeSpecs[graphNode.get('type')](graphNode.get('metadata'));
+    const nodeMetadata = graphNode.get('metadata');
+    const nodeInstance = new nodeSpecs[graphNode.get('type')](nodeMetadata && nodeMetadata.toJS());
 
     nodeInstance.getSpec().inlets.forEach(({ id }) => {
       const matchingInlet = edges.find(edge => {
@@ -21,9 +22,9 @@ export default ({ nodes, edges }) => {
     return nodeInstance;
   };
 
-  // TODO: 'output', 'input', magic strings -> turn into constants?
-  const outputNode = nodes.find(node => node.get('type') === 'output');
-  const outputEdge = outputNode && edges.find(edge => edge.getIn([ 'to', 'id' ]) === outputNode.get('id'));
+  const outputNodeType = 'sysOutput';
+  const outputNode     = nodes.find(node => node.get('type') === outputNodeType);
+  const outputEdge     = outputNode && edges.find(edge => edge.getIn([ 'to', 'id' ]) === outputNode.get('id'));
 
   return outputEdge && createNode(outputEdge.getIn([ 'from', 'id' ])).generate();
 }

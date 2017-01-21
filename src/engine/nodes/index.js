@@ -11,8 +11,10 @@ import opDifference from './op-difference';
 import opUnion from './op-union';
 import opUnionRound from './op-union-round';
 
-import input from './input';
-import output from './output';
+import uiFloat from './ui-float';
+
+import sysInput from './sys-input';
+import sysOutput from './sys-output';
 
 export default {
   sdBox,
@@ -28,6 +30,8 @@ export default {
   opUnion,
   opUnionRound,
 
-  input,
-  output
+  uiFloat,
+
+  sysInput,
+  sysOutput
 };

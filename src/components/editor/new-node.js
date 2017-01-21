@@ -55,14 +55,11 @@ class NewNode extends Component {
   }
 
   onMouseMove({ clientY }) {
-
     const yPos = clientY - this.props.pos.y;
 
     this.setState({
       selectedIndex: Math.floor((yPos - 32) / 24)
-    })
-
-    console.log(yPos);
+    });
   }
 
   render() {
