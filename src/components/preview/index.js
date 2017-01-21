@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 import { fromJS } from 'immutable';
 
 import compileGraph from '../../engine/compile-graph';
-import generateSDFFragment from './generate-sdf-fragment';
+import generateSDFFragment from '../../engine/generate-sdf-fragment';
 
-import './preview.css';
+import './index.css';
 
 class Preview extends Component {
   constructor() {
@@ -63,12 +63,10 @@ const pick = (map, args) => {
   }), {}))
 };
 
-const mapStateToProps = ({ graph }) => {
-  return {
-    nodes: graph.get('nodes').map(node => pick(node, [ 'id', 'type' ])),
-    edges: graph.get('edges').delete('dragging')
-  }
-};
+const mapStateToProps = (state) => ({
+  nodes: state.get('nodes').map(node => pick(node, [ 'id', 'type' ])),
+  edges: state.get('edges').delete('dragging')
+});
 
 const areStatePropsEqual = (a, b) => {
   return a.nodes.equals(b.nodes) && a.edges.equals(b.edges);

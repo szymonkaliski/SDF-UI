@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import Edges from './edges';
+import EditorEdges from './editor-edges';
+import EditorNodes from './editor-nodes';
 import NewNode from './new-node';
-import Nodes from './nodes';
 
-import './editor.css';
+import './index.css';
 
 import { addNode } from '../../actions/graph';
 
@@ -63,22 +63,22 @@ class Editor extends Component {
     const { edges, nodes } = this.props;
 
     return <div className='editor' onDoubleClick={ this.onDoubleClick }>
-      <Edges edges={ edges } nodes={ nodes } width={ width } height={ height }/>
-      <Nodes nodes={ nodes }/>
-      {
-        newNodePopup && <NewNode
-          pos={ mousePos }
-          onSelectNode={ this.onAddNode }
-          onRequestClose={ this.onCloseAddNode }
-        />
-      }
+      <EditorEdges edges={ edges } nodes={ nodes } width={ width } height={ height }/>
+      <EditorNodes nodes={ nodes }/>
+        {
+          newNodePopup && <NewNode
+            pos={ mousePos }
+            onSelectNode={ this.onAddNode }
+            onRequestClose={ this.onCloseAddNode }
+          />
+        }
     </div>
   }
 }
 
-const mapStateToProps = ({ graph }) => ({
-  nodes: graph.get('nodes'),
-  edges: graph.get('edges')
+const mapStateToProps = (state) => ({
+  nodes: state.get('nodes'),
+  edges: state.get('edges')
 });
 
 const mapDispatchToProps = (dispatch) => ({
