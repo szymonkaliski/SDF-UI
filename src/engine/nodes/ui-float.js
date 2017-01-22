@@ -10,12 +10,14 @@ export default generateNode({
   },
 
   ui: ({ metadata, onUpdateMetadata }) => {
+    const { val } = metadata;
+
     return <div className='ui-float'>
       <input
         className='ui-float__input'
         type='number'
         step='any'
-        defaultValue={ metadata.val }
+        defaultValue={ val || 0.0 }
         onChange={
           (e) => { onUpdateMetadata({ val: e.target.value }) }
         }
@@ -23,7 +25,7 @@ export default generateNode({
     </div>;
   },
 
-  generate: (_, { val }) => {
+  generate: (_, { val = 0.0 }) => {
     return `${val}`;
   }
 });

@@ -8,7 +8,7 @@ export default ({ spec, ui, generate }) => {
           [id]: value
         }), {});
 
-      this.metadata = metadata;
+      this.metadata = metadata || {};
     }
 
     getSpec() {

@@ -12,6 +12,7 @@ import opUnion from './op-union';
 import opUnionRound from './op-union-round';
 
 import uiFloat from './ui-float';
+import uiPack3 from './ui-pack3';
 
 import sysInput from './sys-input';
 import sysOutput from './sys-output';
@@ -31,6 +32,7 @@ export default {
   opUnionRound,
 
   uiFloat,
+  uiPack3,
 
   sysInput,
   sysOutput

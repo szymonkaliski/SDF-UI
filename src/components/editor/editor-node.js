@@ -147,7 +147,7 @@ class EditorNode extends Component {
     const CustomUI           = nodeSpecs[type].ui;
 
     return <CustomUI
-      metadata={ metadata ? metadata.toJS() : undefined }
+      metadata={ metadata ? metadata.toJS() : {} }
       onUpdateMetadata={ this.onUpdateMetadata }/>
   }
 
