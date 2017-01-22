@@ -47,10 +47,11 @@ class EditorNode extends Component {
     window.removeEventListener('keydown', this.onKeyDown);
   }
 
-  onKeyDown({ keyCode }) {
-    const { selected } = this.state;
+  onKeyDown(e) {
+    const { key, target } = e;
+    const { selected }    = this.state;
 
-    if (selected && keyCode === 8) {
+    if (selected && key === 'Backspace' && target.localName === 'body') {
       this.props.onDelete();
     }
   }
@@ -141,17 +142,26 @@ class EditorNode extends Component {
     </div>;
   }
 
+  renderCustomUI() {
+    const { metadata, type } = this.props;
+    const CustomUI           = nodeSpecs[type].ui;
+
+    return <CustomUI
+      metadata={ metadata ? metadata.toJS() : undefined }
+      onUpdateMetadata={ this.onUpdateMetadata }/>
+  }
+
   render() {
     const { selected }   = this.state;
     const { x, y, type } = this.props;
-    const CustomUI       = nodeSpecs[type].ui;
+    const hasCustomUI    = !!nodeSpecs[type].ui;
 
     return <div className='node__wrapper' style={{ top: y, left: x }}>
       { this.renderInlets() }
 
       <div className={ classNames('node', { 'node--selected': selected }) } onMouseDown={ this.onMouseDownNode }>
         <div className='node__content'>
-          { CustomUI ? <CustomUI onUpdateMetadata={ this.onUpdateMetadata }/> : type }
+          { hasCustomUI ? this.renderCustomUI() : type }
         </div>
       </div>
 

@@ -1,0 +1,15 @@
+.ui-float {
+  margin-top: -4px;
+}
+
+.ui-float__input,
+.ui-float__input:focus {
+  width: 60px;
+  border: 1px solid #909090;
+  background: #1b1b1b;
+  color: #909090;
+  padding: 4px 8px;
+  outline: none;
+  font-family: 'Cousine', monospace;
+  font-size: 11px;
+}

@@ -42,11 +42,13 @@ class Editor extends Component {
     });
   }
 
-  onDoubleClick({ clientX, clientY }) {
-    this.setState({
-      newNodePopup: true,
-      mousePos: { x: clientX, y: clientY }
-    });
+  onDoubleClick({ clientX, clientY, target }) {
+    if (target.localName === 'svg') {
+      this.setState({
+        newNodePopup: true,
+        mousePos: { x: clientX, y: clientY }
+      });
+    }
   }
 
   onAddNode(nodeType) {

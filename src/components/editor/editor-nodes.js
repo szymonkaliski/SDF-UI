@@ -30,6 +30,7 @@ const EditorNodes = ({
       key={ id }
       x={ node.get('x') }
       y={ node.get('y') }
+      metadata={ node.get('metadata') }
       type={ node.get('type') }
       onMove={ (pos) => moveNode(id, pos) }
       onDelete={ () => deleteNode(id) }

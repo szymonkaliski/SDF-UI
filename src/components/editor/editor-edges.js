@@ -41,10 +41,13 @@ class EditorEdges extends Component {
     this.setState({ selectedId: undefined });
   }
 
-  onKeyDown({ keyCode }) {
-    const { selectedId } = this.state;
+  onKeyDown(e) {
+    const { key, target } = e;
+    const { selectedId }  = this.state;
 
-    if (selectedId && keyCode === 8) {
+    console.log({ selectedId, key, localName: target.localName });
+
+    if (selectedId && key === 'Backspace' && target.localName === 'body') {
       this.props.deleteEdge(selectedId);
       this.setState({ selectedId: undefined });
     }
