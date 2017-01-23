@@ -27,5 +27,5 @@ export default ({ nodes, edges }) => {
   const outputEdge     = outputNode && edges.find(edge => edge.getIn([ 'to', 'id' ]) === outputNode.get('id'));
 
   return outputEdge && createNode(outputEdge.getIn([ 'from', 'id' ])).generate();
-}
+};
 

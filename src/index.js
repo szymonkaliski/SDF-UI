@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { Provider } from 'react-redux';
@@ -16,19 +16,15 @@ import './index.css';
 
 const store = createStore(appStore);
 
-class App extends Component {
-  render() {
-    return <FlexRow>
-      <FlexColumn>
-        <Editor/>
-      </FlexColumn>
+const App = () => <FlexRow>
+  <FlexColumn>
+    <Editor/>
+  </FlexColumn>
 
-      <FlexColumn>
-        <Preview/>
-      </FlexColumn>
-    </FlexRow>;
-  }
-}
+  <FlexColumn>
+    <Preview/>
+  </FlexColumn>
+</FlexRow>;
 
 ReactDOM.render(
   <Provider store={ store }>

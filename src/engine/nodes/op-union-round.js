@@ -5,7 +5,7 @@ export default generateNode({
     inlets: [
       { id: 'd1', type: 'float', value: '0.0' },
       { id: 'd2', type: 'float', value: '0.0' },
-      { id: 'r', type: 'float', value: '0.5' }
+      { id: 'r',  type: 'float', value: '0.5' }
     ],
     outlet: { id: 'd', type: 'float' }
   },

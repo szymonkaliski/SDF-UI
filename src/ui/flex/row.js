@@ -1,11 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import './row.css'
 
-export default class FlexRow extends Component {
-  render() {
-    return <div className='flex-row'>
-      { this.props.children }
-    </div>;
-  }
-}
+export default ({ children }) => <div className='flex-row'>{ children }</div>;
