@@ -5,7 +5,5 @@ export default generateNode({
     outlet: { id: 'p', type: 'vec3' }
   },
 
-  generate: () => {
-    return 'p';
-  }
+  generate: () => 'p'
 });

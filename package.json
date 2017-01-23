@@ -10,6 +10,7 @@
     "gl-react": "^3.0.0-alpha1",
     "gl-react-dom": "^3.0.0-alpha1",
     "immutable": "^3.8.1",
+    "lodash.get": "^4.4.2",
     "lodash.map": "^4.6.0",
     "react": "^15.4.2",
     "react-click-outside": "^2.2.0",

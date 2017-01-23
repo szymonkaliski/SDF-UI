@@ -92,9 +92,9 @@ class EditorNode extends Component {
     });
   }
 
-  onMouseDownOutlet(e) {
+  onMouseDownOutlet(e, outlet) {
     this.onMouseDown(e, {
-      onDrag: ({ absolute }) => { this.props.onDragEdge(absolute); },
+      onDrag: ({ absolute }) => { this.props.onDragEdge(absolute, outlet); },
       onUp:   () => { this.props.onDragEdgeDone(); }
     });
   }
@@ -112,6 +112,11 @@ class EditorNode extends Component {
     const { type }     = this.props;
     const { inlets }   = nodeSpecs[type].spec;
 
+    const typeNames = {
+      float: 'f',
+      vec3:  '3'
+    };
+
     return <div className='node__inlets'>
       {
         inlets && inlets.map(inlet => {
@@ -120,6 +125,7 @@ class EditorNode extends Component {
             className={ classNames('node__inlet', { 'node__inlet--selected': selected }) }
             ref={ (ref) => this.inletsDivs[inlet.id] = ref }>
             { inlet.id }
+            <span className='node__inlet-type'>{ typeNames[inlet.type] }</span>
           </div>
         })
       }
@@ -131,12 +137,18 @@ class EditorNode extends Component {
     const { type }     = this.props;
     const { outlet }   = nodeSpecs[type].spec;
 
+    const typeNames = {
+      float: 'f',
+      vec3:  '3'
+    };
+
     return <div className='node__outlets'>
       {
         outlet && <div
           className={ classNames('node__outlet', { 'node__outlet--selected': selected }) }
-          onMouseDown={ this.onMouseDownOutlet }>
+          onMouseDown={ (e) => this.onMouseDownOutlet(e, outlet) }>
           { outlet.id }
+          <span className='node__outlet-type'>{ typeNames[outlet.type] }</span>
         </div>
       }
     </div>;

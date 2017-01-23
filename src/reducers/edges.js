@@ -1,24 +1,24 @@
+import get from 'lodash.get';
 import { fromJS } from 'immutable';
 
 import { addVec, distVec, randomId } from './utils';
+import nodeSpecs from '../engine/nodes';
 
-export const dragEdge = (state, { fromId, x, y }) => {
+export const dragEdge = (state, { fromId, x, y, outlet }) => {
   const currentDraggingEdge = state.getIn([ 'edges', 'dragging' ]);
 
   if (currentDraggingEdge) {
     state = state.setIn([ 'edges', 'dragging' ], fromJS({
       id: 'dragging',
-      from: { id: fromId }
+      from: { id: fromId, type: outlet.type }
     }));
   }
 
   return state.mergeIn([ 'edges', 'dragging' ], fromJS({ x, y }));
-}
+};
 
 export const dragEdgeDone = (state) => {
   const currentDraggingEdge = state.getIn([ 'edges', 'dragging' ]);
-
-  if (!currentDraggingEdge) { return state; }
 
   // first - remove edge from state
   state = state.deleteIn([ 'edges', 'dragging' ]);
@@ -42,10 +42,30 @@ export const dragEdgeDone = (state) => {
     .sortBy(inlet => inlet.get('dist'))
     .first();
 
+  // only connect if types match
+  const inletSpec = get(nodeSpecs, [nearestNode.get('type'), 'spec', 'inlets' ], [])
+    .find(({ id }) => id === nearestInlet.get('id'));
+
+  const inletType  = get(inletSpec, 'type');
+  const outletType = currentDraggingEdge.getIn([ 'from', 'type' ]);
+
+  if (inletType !== outletType) { return state; }
+
+  // only connect if close enough to the inlet
   const maxDist = 40;
 
   if (nearestInlet.get('dist') > maxDist) { return state; }
 
+  // only connect if we're not duplicating connections
+  const alreadyExist = state.get('edges').find(edge => {
+    return edge.getIn([ 'from', 'id'    ]) === currentDraggingEdge.getIn([ 'from', 'id' ]) &&
+           edge.getIn([ 'to',   'id'    ]) === nearestNode.get('id') &&
+           edge.getIn([ 'to',   'inlet' ]) === nearestInlet.get('id');
+  });
+
+  if (alreadyExist) { return state; }
+
+  // otherwise make new connection in state
   const edge = fromJS({
     id: randomId(),
     from: {
@@ -58,8 +78,8 @@ export const dragEdgeDone = (state) => {
   });
 
   return state.setIn([ 'edges', edge.get('id') ], edge);
-}
+};
 
 export const deleteEdge = (state, { id }) => {
   return state.deleteIn([ 'edges', id ]);
-}
+};

@@ -8,7 +8,7 @@ export default generateNode({
       { id: 'b', type: 'vec3', value: 'vec3(0.0, 0.0, 0.2)' },
       { id: 'r', type: 'float3', value: '0.5' },
     ],
-    outlet: { id: 'dist', type: 'float' }
+    outlet: { id: 'd', type: 'float' }
   },
 
   generate: ({ p, a, b, r }) => {

@@ -13,6 +13,8 @@ import {
   dragEdgeDone,
 } from '../../actions/graph';
 
+// TODO: there's a lot of repetition here
+
 const EditorNodes = ({
   nodes,
   moveNode,
@@ -36,7 +38,7 @@ const EditorNodes = ({
       onDelete={ () => deleteNode(id) }
       onUpdateMetadata={ (metadata) => updateNodeMetadata(id, metadata) }
       setInletsPositions={ (inletsPositions) => setInletsPositions(id, inletsPositions) }
-      onDragEdge={ (pos) => dragEdge(id, pos) }
+      onDragEdge={ (pos, outlet) => dragEdge(id, pos, outlet) }
       onDragEdgeDone={ dragEdgeDone }
     />;
   })
@@ -48,7 +50,7 @@ const mapDispatchToProps = (dispatch) => ({
   updateNodeMetadata: (id, metadata)        => dispatch(updateNodeMetadata(id, metadata)),
   setInletsPositions: (id, inletsPositions) => dispatch(setInletsPositions(id, inletsPositions)),
 
-  dragEdge:           (id, pos)             => dispatch(dragEdge(id, pos)),
+  dragEdge:           (id, pos, outlet)     => dispatch(dragEdge(id, pos, outlet)),
   dragEdgeDone:       ()                    => dispatch(dragEdgeDone()),
 });
 

@@ -29,11 +29,12 @@ export const updateNodeMetadata = (id, metadata) => ({
   metadata
 });
 
-export const dragEdge = (id, { x, y }) => ({
+export const dragEdge = (id, { x, y }, outlet) => ({
   type: 'DRAG_EDGE',
   fromId: id,
   x,
-  y
+  y,
+  outlet
 });
 
 export const dragEdgeDone = () => ({

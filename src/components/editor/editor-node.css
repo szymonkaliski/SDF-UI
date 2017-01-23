@@ -43,8 +43,12 @@
 
   background: #1b1b1b;
   padding: 6px;
+}
 
-  /* transition: color 200ms, background 200ms; */
+.node__inlet-type,
+.node__outlet-type {
+  margin-left: 6px;
+  color: #606060;
 }
 
 .node__inlet--selected,

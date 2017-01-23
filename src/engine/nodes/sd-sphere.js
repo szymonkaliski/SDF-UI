@@ -6,7 +6,7 @@ export default generateNode({
       { id: 'p', type: 'vec3', value: 'vec3(0.0)' },
       { id: 'r', type: 'float', value: '0.66' }
     ],
-    outlet: { id: 'dist', type: 'float' }
+    outlet: { id: 'd', type: 'float' }
   },
 
   generate: ({ p, r }) => {

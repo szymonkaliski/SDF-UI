@@ -6,7 +6,7 @@ import './ui-float.css';
 
 export default generateNode({
   spec: {
-    outlet: { id: 'val', type: 'float' }
+    outlet: { id: 'v', type: 'float' }
   },
 
   ui: ({ metadata, onUpdateMetadata }) => {
