@@ -1,4 +1,4 @@
-export default ({ spec, ui, generate }) => {
+export default ({ spec, frag, ui, generate }) => {
   class AbstractNode {
     constructor(metadata) {
       this.spec = Object.assign({ inlets: [], }, spec);
@@ -25,6 +25,7 @@ export default ({ spec, ui, generate }) => {
     generate() { return generate(this.inlets, this.metadata); }
   }
 
+  AbstractNode.frag = frag;
   AbstractNode.spec = spec;
   AbstractNode.ui   = ui;
 

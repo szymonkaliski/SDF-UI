@@ -9,6 +9,11 @@ export default generateNode({
     outlet: { id: 'd', type: 'float' }
   },
 
+  frag: `
+float sdSphere(vec3 p, float s) {
+  return length(p) - s;
+}`,
+
   generate: ({ p, r }) => {
     return `sdSphere(${p}, ${r})`;
   }

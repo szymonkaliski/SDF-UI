@@ -10,6 +10,12 @@ export default generateNode({
     outlet: { id: 'd', type: 'float' }
   },
 
+  frag: `
+float sdTriangle(vec3 p, float r, float d) {
+  vec3 q = abs(p);
+  return max(q.z - d, max(q.x * 0.866025 + p.y * 0.5, -p.y) - r * 0.5);
+}`,
+
   generate: ({ p, r, d }) => {
     return `sdTriangle(${p}, ${r}, ${d})`;
   }

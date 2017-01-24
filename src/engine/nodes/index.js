@@ -8,6 +8,7 @@ import sdTorus from './sd-torus';
 import sdTriangle from './sd-triangle';
 
 import opDifference from './op-difference';
+import opRepeat from './op-repeat';
 import opUnion from './op-union';
 import opUnionRound from './op-union-round';
 
@@ -28,6 +29,7 @@ export default {
   sdTriangle,
 
   opDifference,
+  opRepeat,
   opUnion,
   opUnionRound,
 

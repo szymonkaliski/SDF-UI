@@ -21,7 +21,7 @@ const Preview = ({ nodes, edges, windowSize }) => {
     shaders = Shaders.create({ sdf: { frag } });
 
     // console.log(compiled);
-    // console.log(frag);
+    console.log(frag);
   }
 
   return <div className='preview' style={{ width: width / 2 }}>

@@ -1,4 +1,4 @@
-export default (doModel) => `
+export default ({ model, inject = '' }) => `
 precision highp float;
 
 uniform float width;
@@ -6,68 +6,14 @@ uniform float height;
 
 const int SDF_STEPS = 50;
 
-// SD
+// INJECTED
 
-float sdBox(vec3 p, vec3 s) {
-  vec3 d = abs(p) - s;
-  return min(max(d.x, max(d.y, d.z)), 0.0) + length(max(d, 0.0));
-}
-
-float sdSphere(vec3 p, float s) {
-  return length(p) - s;
-}
-
-float sdCone(vec3 p, vec3 s) {
-  vec2 q = vec2(length(p.xz), p.y);
-  float d1 = -p.y - s.z;
-  float d2 = max(dot(q, s.xy), p.y);
-
-  return length(max(vec2(d1, d2), 0.0)) + min(max(d1, d2), 0.);
-}
-
-float sdCapsule(vec3 p, vec3 a, vec3 b, float r) {
-  vec3 pa = p - a;
-  vec3 ba = b - a;
-
-  float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
-
-  return length(pa - ba * h) - r;
-}
-
-float sdCylinder(vec3 p, float r, float h) {
-  vec2 d = abs(vec2(length(p.xz), p.y)) - vec2(r, h);
-
-  return min(max(d.x, d.y), 0.0) + length(max(d, 0.0));
-}
-
-float sdHex(vec3 p, float r, float h) {
-  vec3 q = abs(p);
-
-  return max(q.z - h, max((q.x * 0.866025 + q.y * 0.5), q.y) - r);
-}
-
-float sdTorus(vec3 p, float r, float d) {
-  vec2 q = vec2(length(p.xz) - r, p.y);
-
-  return length(q) - d;
-}
-
-float sdTriangle(vec3 p, float r, float d) {
-  vec3 q = abs(p);
-  return max(q.z - d, max(q.x * 0.866025 + p.y * 0.5, -p.y) - r * 0.5);
-}
-
-// OPS
-
-float opUnionRound(float dist1, float dist2, float r) {
-  vec2 u = max(vec2(r - dist1, r - dist2), vec2(0.0));
-  return max(r, min(dist1, dist2)) - length(u);
-}
+${inject.join('\n')}
 
 // MODEL
 
 vec2 doModel(vec3 p) {
-  return vec2(${doModel}, 0.0);
+  return vec2(${model}, 0.0);
 }
 
 // HELPERS
@@ -174,7 +120,7 @@ void main () {
   vec3 ro, rd;
 
   float camRotation = -3.1415 / 4.0;
-  float camHeight   = 3.0;
+  float camHeight   = 2.0;
   float camDist     = 3.0;
 
   orbitCamera(camRotation, camHeight, camDist, vec2(width, height), ro, rd);

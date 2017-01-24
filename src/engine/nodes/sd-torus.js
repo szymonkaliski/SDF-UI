@@ -10,6 +10,13 @@ export default generateNode({
     outlet: { id: 'd', type: 'float' }
   },
 
+  frag: `
+float sdTorus(vec3 p, float r, float d) {
+  vec2 q = vec2(length(p.xz) - r, p.y);
+
+  return length(q) - d;
+}`,
+
   generate: ({ p, r, d }) => {
     return `sdTorus(${p}, ${r}, ${d})`;
   }
