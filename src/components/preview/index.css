@@ -1,4 +1,8 @@
-.preview-empty {
+.preview {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+
   background: black;
-  min-height: 100%;
 }

@@ -14,32 +14,13 @@ class Editor extends Component {
     super();
 
     this.state = {
-      width: 0,
-      height: 0,
       newNodePopup: false,
-      mousePos: undefined
+      mousePos:     undefined
     };
 
-    this.onResize       = this.onResize.bind(this);
     this.onDoubleClick  = this.onDoubleClick.bind(this);
     this.onAddNode      = this.onAddNode.bind(this);
     this.onCloseAddNode = this.onCloseAddNode.bind(this);
-  }
-
-  componentDidMount() {
-    this.onResize();
-    window.addEventListener('resize', this.onResize);
-  }
-
-  componentWillUmount() {
-    window.removeEventListener('resize', this.onResize);
-  }
-
-  onResize() {
-    this.setState({
-      width: window.innerWidth / 2,
-      height: window.innerHeight
-    });
   }
 
   onDoubleClick({ clientX, clientY, target }) {
@@ -61,12 +42,24 @@ class Editor extends Component {
   }
 
   render() {
-    const { width, height, newNodePopup, mousePos } = this.state;
-    const { edges, nodes } = this.props;
+    const { newNodePopup, mousePos }   = this.state;
+    const { edges, nodes, windowSize } = this.props;
 
-    return <div className='editor' onDoubleClick={ this.onDoubleClick }>
-      <EditorEdges edges={ edges } nodes={ nodes } width={ width } height={ height }/>
-      <EditorNodes nodes={ nodes }/>
+    const width  = windowSize.get('width');
+    const height = windowSize.get('height');
+
+    let contentWidth  = width / 2;
+    let contentHeight = height;
+
+    if (nodes.count() > 0) {
+      contentWidth  = Math.max(contentWidth, nodes.maxBy(node => node.get('x')).get('x') + 160);
+      contentHeight = Math.max(contentWidth, nodes.maxBy(node => node.get('y')).get('y') + 120);
+    }
+
+    return <div className='editor' onDoubleClick={ this.onDoubleClick } style={{ width: width / 2 }}>
+      <div className='editor__content' style={{ width: contentWidth, height: contentHeight }}>
+        <EditorEdges edges={ edges } nodes={ nodes } width={ width / 2 } height={ height }/>
+        <EditorNodes nodes={ nodes }/>
         {
           newNodePopup && <NewNode
             pos={ mousePos }
@@ -74,13 +67,15 @@ class Editor extends Component {
             onRequestClose={ this.onCloseAddNode }
           />
         }
+      </div>
     </div>
   }
 }
 
 const mapStateToProps = (state) => ({
-  nodes: state.get('nodes'),
-  edges: state.get('edges')
+  nodes:      state.get('nodes'),
+  edges:      state.get('edges'),
+  windowSize: state.get('windowSize')
 });
 
 const mapDispatchToProps = (dispatch) => ({

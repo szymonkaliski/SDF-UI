@@ -14,6 +14,10 @@ import {
   deleteEdge
 } from './edges';
 
+import {
+  updateWindowSize
+} from './window-size';
+
 const isDebug = window.location.search.indexOf('debug') >= 0;
 
 let parsed;
@@ -32,7 +36,11 @@ if (isDebug) {
   }
 }
 
-const initialState = parsed ? fromJS(parsed) : fromJS({ nodes: {}, edges: {} });
+const initialState = parsed ? fromJS(parsed) : fromJS({
+  nodes:      {},
+  edges:      {},
+  windowSize: { width: 0, height: 0 }
+});
 
 const actions = {
   ADD_NODE:             addNode,
@@ -43,7 +51,9 @@ const actions = {
 
   DRAG_EDGE:            dragEdge,
   DRAG_EDGE_DONE:       dragEdgeDone,
-  DELETE_EDGE:          deleteEdge
+  DELETE_EDGE:          deleteEdge,
+
+  UPDATE_WINDOW_SIZE:   updateWindowSize
 };
 
 export default (state = initialState, action) => {

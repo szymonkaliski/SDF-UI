@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Node, Shaders } from 'gl-react';
 import { Surface } from 'gl-react-dom';
 import { connect } from 'react-redux';
@@ -9,52 +9,29 @@ import generateSDFFragment from '../../engine/generate-sdf-fragment';
 
 import './index.css';
 
-class Preview extends Component {
-  constructor() {
-    super();
+const Preview = ({ nodes, edges, windowSize }) => {
+  const width    = windowSize.get('width');
+  const height   = windowSize.get('height');
+  const compiled = compileGraph({ nodes, edges });
 
-    this.state = { width: 0, height: 0 };
-    this.onResize = this.onResize.bind(this);
+  let shaders;
+
+  if (compiled) {
+    const frag = generateSDFFragment(compiled);
+    shaders = Shaders.create({ sdf: { frag } });
+
+    // console.log(compiled);
+    // console.log(frag);
   }
 
-  componentDidMount() {
-    this.onResize();
-    window.addEventListener('resize', this.onResize);
-  }
-
-  componentWillUmount() {
-    window.removeEventListener('resize', this.onResize);
-  }
-
-  onResize() {
-    const width  = window.innerWidth / 2;
-    const height = window.innerHeight;
-
-    this.setState({ width, height });
-  }
-
-  render() {
-    const { width, height } = this.state;
-    const { nodes, edges }  = this.props;
-
-    const compiled = compileGraph({ nodes, edges });
-
-    if (compiled) {
-      const frag = generateSDFFragment(compiled);
-      const shaders = Shaders.create({ sdf: { frag } });
-
-      // console.log(compiled);
-      // console.log(frag);
-
-      return <Surface width={ width } height={ height }>
-        <Node shader={ shaders.sdf } uniforms={{ width, height }}/>
-      </Surface>;
+  return <div className='preview' style={{ width: width / 2 }}>
+    {
+      compiled && <Surface width={ width / 2 } height={ height }>
+        <Node shader={ shaders.sdf } uniforms={{ width: width / 2, height }}/>
+      </Surface>
     }
-    else {
-      return <div className='preview-empty' />;
-    }
-  }
-}
+  </div>;
+};
 
 const pick = (map, args) => {
   return fromJS(args.reduce((memo, arg) => ({
@@ -64,12 +41,11 @@ const pick = (map, args) => {
 };
 
 const mapStateToProps = (state) => ({
-  nodes: state.get('nodes').map(node => pick(node, [ 'id', 'type', 'metadata' ])),
-  edges: state.get('edges').delete('dragging')
+  nodes:      state.get('nodes').map(node => pick(node, [ 'id', 'type', 'metadata' ])),
+  edges:      state.get('edges').delete('dragging'),
+  windowSize: state.get('windowSize')
 });
 
-const areStatePropsEqual = (a, b) => {
-  return a.nodes.equals(b.nodes) && a.edges.equals(b.edges);
-};
+const areStatePropsEqual = (a, b) => [ 'nodes', 'edges', 'windowSize' ].every(key => a[key].equals(b[key]));
 
 export default connect(mapStateToProps, null, null, { pure: true, areStatePropsEqual })(Preview);

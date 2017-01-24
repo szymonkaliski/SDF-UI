@@ -1,34 +1,59 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-import { Provider } from 'react-redux';
+import { connect, Provider } from 'react-redux';
 import { createStore } from 'redux';
 
 import Editor from './components/editor';
 import Preview from './components/preview';
 
-import FlexColumn from './ui/flex/column';
-import FlexRow from './ui/flex/row';
-
 import appStore from './reducers';
+import { updateWindowSize } from './actions/window-size';
 
 import './index.css';
 
 const store = createStore(appStore);
 
-const App = () => <FlexRow>
-  <FlexColumn>
-    <Editor/>
-  </FlexColumn>
+class App extends Component {
+  constructor() {
+    super();
 
-  <FlexColumn>
-    <Preview/>
-  </FlexColumn>
-</FlexRow>;
+    this.onResize = this.onResize.bind(this);
+  }
+
+  componentDidMount() {
+    this.onResize();
+    window.addEventListener('resize', this.onResize);
+  }
+
+  componentWillUmount() {
+    window.removeEventListener('resize', this.onResize);
+  }
+
+  onResize() {
+    this.props.updateWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight
+    });
+  }
+
+  render() {
+    return <div>
+      <Editor />
+      <Preview />
+    </div>
+  }
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  updateWindowSize: (windowSize) => dispatch(updateWindowSize(windowSize))
+});
+
+const AppConnected = connect(null, mapDispatchToProps)(App);
 
 ReactDOM.render(
   <Provider store={ store }>
-    <App />
+    <AppConnected />
   </Provider>,
   document.getElementById('root')
 );
