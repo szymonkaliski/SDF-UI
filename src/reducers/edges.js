@@ -28,6 +28,9 @@ export const dragEdgeDone = (state) => {
     return distVec(currentDraggingEdge.toJS(), compareNode.toJS());
   });
 
+  // only connect if nearest node has any inlets
+  if (!nearestNode.has('inletsPositions')) { return state; }
+
   // find nearest inlet of nearest node
   const nearestInlet = nearestNode
     .get('inletsPositions')

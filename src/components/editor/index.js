@@ -58,7 +58,7 @@ class Editor extends Component {
 
     return <div className='editor' onDoubleClick={ this.onDoubleClick } style={{ width: width / 2 }}>
       <div className='editor__content' style={{ width: contentWidth, height: contentHeight }}>
-        <EditorEdges edges={ edges } nodes={ nodes } width={ width / 2 } height={ height }/>
+        <EditorEdges edges={ edges } nodes={ nodes } width={ contentWidth } height={ contentHeight }/>
         <EditorNodes nodes={ nodes }/>
         {
           newNodePopup && <NewNode
