@@ -5,9 +5,10 @@ import EditorEdges from './editor-edges';
 import EditorNodes from './editor-nodes';
 import NewNode from './new-node';
 
-import './index.css';
-
+import nodeSpecs from '../../engine/nodes';
 import { addNode } from '../../actions/graph';
+
+import './index.css';
 
 class Editor extends Component {
   constructor() {
@@ -52,17 +53,22 @@ class Editor extends Component {
     let contentHeight = height;
 
     if (nodes.count() > 0) {
-      contentWidth  = Math.max(contentWidth, nodes.maxBy(node => node.get('x')).get('x') + 160);
-      contentHeight = Math.max(contentWidth, nodes.maxBy(node => node.get('y')).get('y') + 120);
+      contentWidth  = Math.max(contentWidth,  nodes.maxBy(node => node.get('x')).get('x') + 160);
+      contentHeight = Math.max(contentHeight, nodes.maxBy(node => node.get('y')).get('y') + 120);
     }
 
-    return <div className='editor' onDoubleClick={ this.onDoubleClick } style={{ width: width / 2 }}>
-      <div className='editor__content' style={{ width: contentWidth, height: contentHeight }}>
+    const popupPos = mousePos && {
+      x: Math.min(mousePos.x, width / 2 - 160),
+      y: Math.min(mousePos.y, height - Object.keys(nodeSpecs).length * 24- 20)
+    };
+
+    return <div className='editor' onDoubleClick={ this.onDoubleClick } style={{ width: width / 2, height }}>
+      <div className='editor__content' style={{ width: contentWidth, height }}>
         <EditorEdges edges={ edges } nodes={ nodes } width={ contentWidth } height={ contentHeight }/>
         <EditorNodes nodes={ nodes }/>
         {
           newNodePopup && <NewNode
-            pos={ mousePos }
+            pos={ popupPos }
             onSelectNode={ this.onAddNode }
             onRequestClose={ this.onCloseAddNode }
           />

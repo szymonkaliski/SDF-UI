@@ -1,5 +1,6 @@
 .new_node {
-  position: absolute;
+  position: fixed;
+  width: 140px;
 }
 
 .new_node__input,
@@ -18,8 +19,10 @@
 
   color: #1b1b1b;
   background: #909090;
+
+  cursor: pointer;
 }
 
-.new_node__opt--selected {
+.new_node__opt:hover {
   background: #606060;
 }

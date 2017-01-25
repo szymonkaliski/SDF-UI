@@ -10,6 +10,8 @@
   background: #1b1b1b;
   text-align: center;
   color: #909090;
+
+  cursor: move;
 }
 
 .node--selected {
@@ -43,6 +45,8 @@
 
   background: #1b1b1b;
   padding: 6px;
+
+  cursor: crosshair;
 }
 
 .node__inlet-type,
