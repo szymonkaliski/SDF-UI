@@ -14,7 +14,7 @@ vec3 opRepeatPolar(vec3 p, float r) {
   float angle = 2.0 * 3.1415 / r;
 
   float a = atan(p.y, p.x) + angle / 2.0;
-  float l = length(p);
+  float l = length(p.xy);
 
   a = mod(a, angle) - angle / 2.0;
 

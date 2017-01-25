@@ -4,7 +4,11 @@ precision highp float;
 uniform float width;
 uniform float height;
 
-const int SDF_STEPS = 50;
+uniform float camRotation;
+uniform float camHeight;
+uniform float camDist;
+
+const int SDF_STEPS = 100;
 
 // INJECTED
 
@@ -42,7 +46,7 @@ vec2 calcRayIntersection(vec3 rayOrigin, vec3 rayDir, float maxd, float precis) 
 }
 
 vec2 raytrace(vec3 rayOrigin, vec3 rayDir) {
-  return calcRayIntersection(rayOrigin, rayDir, 20.0, 0.001);
+  return calcRayIntersection(rayOrigin, rayDir, 100.0, 0.0001);
 }
 
 vec3 calcNormal(vec3 pos, float eps) {
@@ -52,9 +56,9 @@ vec3 calcNormal(vec3 pos, float eps) {
   const vec3 v4 = vec3( 1.0,  1.0,  1.0);
 
   return normalize(v1 * doModel(pos + v1 * eps).x +
-                    v2 * doModel(pos + v2 * eps).x +
-                    v3 * doModel(pos + v3 * eps).x +
-                    v4 * doModel(pos + v4 * eps).x);
+                   v2 * doModel(pos + v2 * eps).x +
+                   v3 * doModel(pos + v3 * eps).x +
+                   v4 * doModel(pos + v4 * eps).x);
 }
 
 vec3 normal(vec3 pos) {
@@ -96,21 +100,23 @@ void orbitCamera(
   vec2 screenPos = square(screenResolution);
   vec3 rayTarget = vec3(0.0);
 
+  float PI = 3.1415;
+
   rayOrigin = vec3(
-    camDistance * sin(camAngle),
-    camHeight,
-    camDistance * cos(camAngle)
+    camDistance * sin(camAngle * PI / 360.0) * cos(camHeight * PI / 360.0),
+    camDistance * sin(camHeight * PI / 360.0),
+    camDistance * cos(camAngle * PI / 360.0) * cos(camHeight * PI / 360.0)
   );
 
   rayDirection = getRay(rayOrigin, rayTarget, screenPos, 2.0);
 }
 
 vec3 lighting(vec3 pos, vec3 nor, vec3 ro, vec3 rd) {
-  vec3 dir = normalize(vec3(-15.0, 15.0, 15.0));
-  vec3 col = vec3(0.92);
+  vec3 dir = normalize(vec3(-10.0, 10.0, 10.0));
+  vec3 col = vec3(1.00);
   vec3 dif = col * max(0.0, dot(dir, nor));
 
-  vec3 ambient = vec3(0.06);
+  vec3 ambient = vec3(0.1);
 
   return dif + ambient;
 }
@@ -118,10 +124,6 @@ vec3 lighting(vec3 pos, vec3 nor, vec3 ro, vec3 rd) {
 void main () {
   vec3 color = vec3(0.0);
   vec3 ro, rd;
-
-  float camRotation = -3.1415 / 4.0;
-  float camHeight   = 2.0;
-  float camDist     = 3.0;
 
   orbitCamera(camRotation, camHeight, camDist, vec2(width, height), ro, rd);
 
