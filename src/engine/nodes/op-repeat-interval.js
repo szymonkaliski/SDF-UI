@@ -14,7 +14,7 @@ export default generateNode({
   frag: `
 vec3 opRepeatInterval(vec3 p, vec3 r, float a, float b) {
 ${['x', 'y', 'z'].map(key => `
-  if (r.${key} > 0.0) {
+  if (abs(r.${key}) > 0.0) {
     float halfr = r.${key} * 0.5;
 
     float c = floor((p.${key} + halfr) / r.${key});

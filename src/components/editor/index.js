@@ -53,7 +53,7 @@ class Editor extends Component {
     let contentHeight = height;
 
     if (nodes.count() > 0) {
-      contentWidth  = Math.max(contentWidth,  nodes.maxBy(node => node.get('x')).get('x') + 160);
+      contentWidth  = Math.max(contentWidth,  nodes.maxBy(node => node.get('x')).get('x') + 180);
       contentHeight = Math.max(contentHeight, nodes.maxBy(node => node.get('y')).get('y') + 120);
     }
 

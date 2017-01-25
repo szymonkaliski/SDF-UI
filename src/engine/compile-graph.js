@@ -33,8 +33,10 @@ export default ({ nodes, edges }) => {
   const outputNode     = nodes.find(node => node.get('type') === outputNodeType);
   const outputEdge     = outputNode && edges.find(edge => edge.getIn([ 'to', 'id' ]) === outputNode.get('id'));
 
+  if (!outputEdge) { return; }
+
   return {
-    model:  outputEdge && createNode(outputEdge.getIn([ 'from', 'id' ])).generate(),
+    model:  createNode(outputEdge.getIn([ 'from', 'id' ])).generate(),
     inject: uniq(inject).map(type => nodeSpecs[type].frag).filter(identity)
   };
 };

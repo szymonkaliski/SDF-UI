@@ -8,6 +8,10 @@ import sdTorus from './sd-torus';
 import sdTriangle from './sd-triangle';
 
 import opDifference from './op-difference';
+import opDifferenceRound from './op-difference-round';
+import opIntersect from './op-intersect';
+import opIntersectRound from './op-intersect-round';
+import opMirror from './op-mirror';
 import opRepeat from './op-repeat';
 import opRepeatInterval from './op-repeat-interval';
 import opTranslate from './op-translate';
@@ -31,6 +35,10 @@ export default {
   sdTriangle,
 
   opDifference,
+  opDifferenceRound,
+  opIntersect,
+  opIntersectRound,
+  opMirror,
   opRepeat,
   opRepeatInterval,
   opTranslate,
