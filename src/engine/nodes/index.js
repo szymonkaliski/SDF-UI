@@ -14,6 +14,8 @@ import opIntersectRound from './op-intersect-round';
 import opMirror from './op-mirror';
 import opRepeat from './op-repeat';
 import opRepeatInterval from './op-repeat-interval';
+import opRepeatPolar from './op-repeat-polar';
+import opRotate from './op-rotate';
 import opTranslate from './op-translate';
 import opUnion from './op-union';
 import opUnionRound from './op-union-round';
@@ -41,6 +43,8 @@ export default {
   opMirror,
   opRepeat,
   opRepeatInterval,
+  opRepeatPolar,
+  opRotate,
   opTranslate,
   opUnion,
   opUnionRound,

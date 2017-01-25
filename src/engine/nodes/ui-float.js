@@ -16,7 +16,7 @@ export default generateNode({
       <input
         className='ui-float__input'
         type='number'
-        step='any'
+        step='0.01'
         defaultValue={ val || 0.0 }
         onChange={
           (e) => { onUpdateMetadata({ val: e.target.value }) }
