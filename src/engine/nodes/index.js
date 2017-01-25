@@ -9,6 +9,8 @@ import sdTriangle from './sd-triangle';
 
 import opDifference from './op-difference';
 import opRepeat from './op-repeat';
+import opRepeatInterval from './op-repeat-interval';
+import opTranslate from './op-translate';
 import opUnion from './op-union';
 import opUnionRound from './op-union-round';
 
@@ -30,6 +32,8 @@ export default {
 
   opDifference,
   opRepeat,
+  opRepeatInterval,
+  opTranslate,
   opUnion,
   opUnionRound,
 

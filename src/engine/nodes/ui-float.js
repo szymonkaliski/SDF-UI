@@ -26,6 +26,6 @@ export default generateNode({
   },
 
   generate: (_, { val = 0.0 }) => {
-    return `${val}`;
+    return `${parseFloat(val).toFixed(5)}`;
   }
 });
