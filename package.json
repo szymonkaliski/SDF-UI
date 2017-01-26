@@ -18,7 +18,8 @@
     "react-click-outside": "^2.2.0",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.1",
-    "redux": "^3.6.0"
+    "redux": "^3.6.0",
+    "redux-thunk": "^2.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

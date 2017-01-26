@@ -1,10 +1,14 @@
+/* global firebase */
+
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
+import thunk from 'redux-thunk';
 import { connect, Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 
 import Editor from './components/editor';
+import Navbar from './components/navbar';
 import Preview from './components/preview';
 
 import appStore from './reducers';
@@ -12,7 +16,15 @@ import { updateWindowSize } from './actions/window-size';
 
 import './index.css';
 
-const store = createStore(appStore);
+const store = createStore(appStore, applyMiddleware(thunk));
+
+firebase.initializeApp({
+  apiKey:            process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain:        'sdf-ui.firebaseapp.com',
+  databaseURL:       'https://sdf-ui.firebaseio.com',
+  storageBucket:     'sdf-ui.appspot.com',
+  messagingSenderId: process.env.REACT_APP_FIREBASE_SENDER_ID
+});
 
 class App extends Component {
   constructor() {
@@ -41,6 +53,7 @@ class App extends Component {
     return <div className='app'>
       <Editor/>
       <Preview/>
+      <Navbar/>
     </div>
   }
 };

@@ -18,6 +18,10 @@ import {
   updateWindowSize
 } from './window-size';
 
+import {
+  saveGraphDone
+} from './firebase';
+
 const isDebug = window.location.search.indexOf('debug') >= 0;
 
 let parsed;
@@ -53,12 +57,17 @@ const actions = {
   DRAG_EDGE_DONE:       dragEdgeDone,
   DELETE_EDGE:          deleteEdge,
 
-  UPDATE_WINDOW_SIZE:   updateWindowSize
+  UPDATE_WINDOW_SIZE:   updateWindowSize,
+
+  SAVE_GRAPH_DONE:      saveGraphDone
 };
 
 export default (state = initialState, action) => {
   if (actions[action.type]) {
     state = actions[action.type](state, action);
+  }
+  else {
+    console.warn(`No handler for action ${action.type}`);
   }
 
   if (isDebug && state) {
