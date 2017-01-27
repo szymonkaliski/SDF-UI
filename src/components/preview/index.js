@@ -7,17 +7,13 @@ import { fromJS } from 'immutable';
 import compileGraph from '../../engine/compile-graph';
 import generateSDFFragment from '../../engine/generate-sdf-fragment';
 
+import { setCamera } from '../../actions/preview';
+
 import './index.css';
 
 class Preview extends Component {
   constructor() {
     super();
-
-    this.state = {
-      camRotation: 0,
-      camHeight:   0,
-      camDist:     5
-    };
 
     this.onRef       = this.onRef.bind(this);
     this.onScroll    = this.onScroll.bind(this);
@@ -27,8 +23,8 @@ class Preview extends Component {
   onScroll(e) {
     e.preventDefault();
 
-    this.setState({
-      camDist: Math.max(0, this.state.camDist + e.deltaY / 100)
+    this.props.setCamera({
+      dist: Math.max(0, this.props.camera.get('dist') + e.deltaY / 100)
     });
   }
 
@@ -36,17 +32,17 @@ class Preview extends Component {
     const clickX = e.clientX;
     const clickY = e.clientY;
 
-    const startRotation = this.state.camRotation;
-    const startHeight   = this.state.camHeight;
+    const startRotation = this.props.camera.get('rotation');
+    const startHeight   = this.props.camera.get('height');
 
     const onDrag = (e) => {
       const dx = clickX - e.clientX;
       const dy = clickY - e.clientY;
 
-      const camRotation = startRotation + dx;
-      const camHeight   = Math.min(180, Math.max(-180, startHeight - dy));
+      const rotation = startRotation + dx;
+      const height   = Math.min(180, Math.max(-180, startHeight - dy));
 
-      this.setState({ camRotation, camHeight });
+      this.props.setCamera({ rotation, height });
     };
 
     const onUp = () => {
@@ -69,8 +65,7 @@ class Preview extends Component {
   }
 
   render() {
-    const { windowSize, nodes, edges }        = this.props;
-    const { camRotation, camHeight, camDist } = this.state;
+    const { windowSize, nodes, edges, camera } = this.props;
 
     const width    = windowSize.get('width');
     const height   = windowSize.get('height');
@@ -94,9 +89,9 @@ class Preview extends Component {
             uniforms={{
               width: width / 2,
               height,
-              camRotation,
-              camHeight,
-              camDist
+              camRotation: camera.get('rotation'),
+              camHeight: camera.get('height'),
+              camDist: camera.get('dist')
             }}
           />
         </Surface>
@@ -115,9 +110,14 @@ const pick = (map, args) => {
 const mapStateToProps = (state) => ({
   nodes:      state.get('nodes').map(node => pick(node, [ 'id', 'type', 'metadata' ])),
   edges:      state.get('edges').delete('dragging'),
+  camera:     state.get('camera'),
   windowSize: state.get('windowSize')
 });
 
-const areStatePropsEqual = (a, b) => [ 'nodes', 'edges', 'windowSize' ].every(key => a[key].equals(b[key]));
+const mapDispatchToProps = (dispatch) => ({
+  setCamera: (camera) => dispatch(setCamera(camera))
+});
 
-export default connect(mapStateToProps, null, null, { pure: true, areStatePropsEqual })(Preview);
+const areStatePropsEqual = (a, b) => [ 'nodes', 'edges', 'windowSize', 'camera' ].every(key => a[key].equals(b[key]));
+
+export default connect(mapStateToProps, mapDispatchToProps, null, { pure: true, areStatePropsEqual })(Preview);

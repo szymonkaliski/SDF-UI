@@ -22,6 +22,10 @@ import {
   saveGraphDone
 } from './firebase';
 
+import {
+  setCamera
+} from './preview';
+
 const isDebug = window.location.search.indexOf('debug') >= 0;
 
 let parsed;
@@ -43,7 +47,8 @@ if (isDebug) {
 const initialState = parsed ? fromJS(parsed) : fromJS({
   nodes:      {},
   edges:      {},
-  windowSize: { width: 0, height: 0 }
+  windowSize: { width: 0, height: 0 },
+  camera:     { rotation: 0, height: 0, dist: 5 }
 });
 
 const actions = {
@@ -59,12 +64,16 @@ const actions = {
 
   UPDATE_WINDOW_SIZE:   updateWindowSize,
 
-  SAVE_GRAPH_DONE:      saveGraphDone
+  SAVE_GRAPH_DONE:      saveGraphDone,
+
+  SET_CAMERA:           setCamera
 };
 
 export default (state = initialState, action) => {
   if (actions[action.type]) {
+    console.log(action);
     state = actions[action.type](state, action);
+    console.log(state.toJS());
   }
   else {
     console.warn(`No handler for action ${action.type}`);
