@@ -1,5 +1,3 @@
-/* global firebase */
-
 export const addNode = (nodeType, { x, y }) => ({
   type: 'ADD_NODE',
   nodeType,
@@ -47,19 +45,4 @@ export const deleteEdge = (id) => ({
   type: 'DELETE_EDGE',
   id
 });
-
-export const saveGraphDone = (snap) => ({
-  type: 'SAVE_GRAPH_DONE',
-  snap
-});
-
-export const saveGraph = (state) => (dispatch) => {
-  firebase
-    .database()
-    .ref('graphs')
-    .push({ test: true })
-    .then(snap => {
-      dispatch(saveGraphDone({ key: snap.key }));
-    });
-};
 

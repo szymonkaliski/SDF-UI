@@ -19,12 +19,13 @@ import {
 } from './window-size';
 
 import {
-  saveGraphDone
-} from './firebase';
-
-import {
   setCamera
 } from './preview';
+
+import {
+  saveToFirebaseDone,
+  readFromFirebaseDone
+} from './firebase';
 
 const isDebug = window.location.search.indexOf('debug') >= 0;
 
@@ -45,35 +46,35 @@ if (isDebug) {
 }
 
 const initialState = parsed ? fromJS(parsed) : fromJS({
-  nodes:      {},
-  edges:      {},
-  windowSize: { width: 0, height: 0 },
-  camera:     { rotation: 0, height: 0, dist: 5 }
+  nodes:       {},
+  edges:       {},
+  windowSize:  { width: 0, height: 0 },
+  camera:      { rotation: 0, height: 0, dist: 5 },
+  databaseKey: undefined
 });
 
 const actions = {
-  ADD_NODE:             addNode,
-  MOVE_NODE:            moveNode,
-  DELETE_NODE:          deleteNode,
-  SET_INLETS_POSITIONS: setNodeInletsPositions,
-  UPDATE_NODE_METADATA: updateNodeMetadata,
+  ADD_NODE:                addNode,
+  MOVE_NODE:               moveNode,
+  DELETE_NODE:             deleteNode,
+  SET_INLETS_POSITIONS:    setNodeInletsPositions,
+  UPDATE_NODE_METADATA:    updateNodeMetadata,
 
-  DRAG_EDGE:            dragEdge,
-  DRAG_EDGE_DONE:       dragEdgeDone,
-  DELETE_EDGE:          deleteEdge,
+  DRAG_EDGE:               dragEdge,
+  DRAG_EDGE_DONE:          dragEdgeDone,
+  DELETE_EDGE:             deleteEdge,
 
-  UPDATE_WINDOW_SIZE:   updateWindowSize,
+  SET_CAMERA:              setCamera,
 
-  SAVE_GRAPH_DONE:      saveGraphDone,
+  UPDATE_WINDOW_SIZE:      updateWindowSize,
 
-  SET_CAMERA:           setCamera
+  SAVE_TO_FIREBASE_DONE:   saveToFirebaseDone,
+  READ_FROM_FIREBASE_DONE: readFromFirebaseDone
 };
 
 export default (state = initialState, action) => {
   if (actions[action.type]) {
-    console.log(action);
     state = actions[action.type](state, action);
-    console.log(state.toJS());
   }
   else {
     console.warn(`No handler for action ${action.type}`);

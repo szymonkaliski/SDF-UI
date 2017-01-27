@@ -1,5 +1,11 @@
-export const saveGraphDone = (state, { key }) => {
-  console.log('saved as: ', key);
+import { fromJS } from 'immutable';
 
-  return state;
+export const saveToFirebaseDone = (state, { key }) => {
+  return state.set('databaseKey', key);
+};
+
+export const readFromFirebaseDone = (state, { data }) => {
+  return [ 'nodes', 'edges', 'camera' ].reduce((memo, key) => {
+    return memo.set(key, fromJS(data[key]));
+  }, state);
 };

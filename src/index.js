@@ -5,13 +5,17 @@ import ReactDOM from 'react-dom';
 
 import thunk from 'redux-thunk';
 import { connect, Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, bindActionCreators } from 'redux';
+
+import get from 'lodash.get';
+import querystring from 'querystring';
 
 import Editor from './components/editor';
 import Navbar from './components/navbar';
 import Preview from './components/preview';
 
 import appStore from './reducers';
+import { readFromFirebase } from './actions/firebase';
 import { updateWindowSize } from './actions/window-size';
 
 import './index.css';
@@ -34,8 +38,27 @@ class App extends Component {
   }
 
   componentDidMount() {
+    // read from firebase if we have ?id=...
+    const urlId = get(querystring.parse(window.location.search.replace('?', '')), 'id');
+    if (urlId) { this.props.readFromFirebase(urlId); }
+
+    // setup resize handler
     this.onResize();
     window.addEventListener('resize', this.onResize);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.databaseKey) {
+      const queryString = `?id=${nextProps.databaseKey}`;
+
+      if (history.pushState) {
+        const path = `${window.location.protocol}//${window.location.host}${window.location.pathname}${queryString}`;
+        window.history.pushState({ path }, '', path);
+      }
+      else {
+        window.location.search = queryString;
+      }
+    }
   }
 
   componentWillUmount() {
@@ -58,11 +81,13 @@ class App extends Component {
   }
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  updateWindowSize: (windowSize) => dispatch(updateWindowSize(windowSize))
+const mapStateToProps = (state) => ({
+  databaseKey: state.get('databaseKey')
 });
 
-const AppConnected = connect(null, mapDispatchToProps)(App);
+const mapDispatchToProps = (dispatch) => bindActionCreators({ updateWindowSize, readFromFirebase }, dispatch);
+
+const AppConnected = connect(mapStateToProps, mapDispatchToProps)(App);
 
 ReactDOM.render(
   <Provider store={ store }>

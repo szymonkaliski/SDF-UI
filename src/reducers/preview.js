@@ -13,6 +13,5 @@ const removeEmptyVals = (obj) => {
 
 export const setCamera = (state, { rotation, height, dist }) => {
   const camera = removeEmptyVals({ rotation, height, dist });
-  console.log(camera)
   return state.mergeIn([ 'camera' ], fromJS(camera));
 };

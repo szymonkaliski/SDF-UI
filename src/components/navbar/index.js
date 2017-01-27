@@ -1,16 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { saveGraph } from '../../actions/graph';
+import { saveToFirebase } from '../../actions/firebase';
 
 import './navbar.css';
 
-const Navbar = ({ saveGraph }) => {
-  return <div className='navbar' onClick={ saveGraph }>SAVE</div>
+const Navbar = ({ saveToFirebase }) => {
+  return <div className='navbar' onClick={ saveToFirebase }>SAVE</div>
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  saveGraph: () => dispatch(saveGraph())
+  saveToFirebase: () => dispatch(saveToFirebase())
 });
 
 export default connect(null, mapDispatchToProps)(Navbar);
