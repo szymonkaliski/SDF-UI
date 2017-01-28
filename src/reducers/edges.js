@@ -59,11 +59,10 @@ export const dragEdgeDone = (state) => {
 
   if (nearestInlet.get('dist') > maxDist) { return state; }
 
-  // only connect if we're not duplicating connections
+  // only connect if there's no previous connections to given inlet
   const alreadyExist = state.get('edges').find(edge => {
-    return edge.getIn([ 'from', 'id'    ]) === currentDraggingEdge.getIn([ 'from', 'id' ]) &&
-           edge.getIn([ 'to',   'id'    ]) === nearestNode.get('id') &&
-           edge.getIn([ 'to',   'inlet' ]) === nearestInlet.get('id');
+    return edge.getIn([ 'to', 'id'    ]) === nearestNode.get('id') &&
+           edge.getIn([ 'to', 'inlet' ]) === nearestInlet.get('id');
   });
 
   if (alreadyExist) { return state; }
