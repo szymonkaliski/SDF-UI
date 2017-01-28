@@ -1,4 +1,5 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import EditorNode from './editor-node';
@@ -8,12 +9,9 @@ import {
   deleteNode,
   setInletsPositions,
   updateNodeMetadata,
-
   dragEdge,
   dragEdgeDone,
 } from '../../actions/graph';
-
-// TODO: there's a lot of repetition here
 
 const EditorNodes = ({
   nodes,
@@ -21,7 +19,6 @@ const EditorNodes = ({
   deleteNode,
   setInletsPositions,
   updateNodeMetadata,
-
   dragEdge,
   dragEdgeDone
 }) => <div> {
@@ -44,14 +41,13 @@ const EditorNodes = ({
   })
 } </div>;
 
-const mapDispatchToProps = (dispatch) => ({
-  moveNode:           (id, pos)             => dispatch(moveNode(id, pos)),
-  deleteNode:         (id)                  => dispatch(deleteNode(id)),
-  updateNodeMetadata: (id, metadata)        => dispatch(updateNodeMetadata(id, metadata)),
-  setInletsPositions: (id, inletsPositions) => dispatch(setInletsPositions(id, inletsPositions)),
-
-  dragEdge:           (id, pos, outlet)     => dispatch(dragEdge(id, pos, outlet)),
-  dragEdgeDone:       ()                    => dispatch(dragEdgeDone()),
-});
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  moveNode,
+  deleteNode,
+  updateNodeMetadata,
+  setInletsPositions,
+  dragEdge,
+  dragEdgeDone
+}, dispatch);
 
 export default connect(null, mapDispatchToProps)(EditorNodes);

@@ -8,7 +8,9 @@ uniform float camRotation;
 uniform float camHeight;
 uniform float camDist;
 
-const int SDF_STEPS = 100;
+uniform float time;
+
+const int SDF_STEPS = 50;
 
 ${inject.join('\n')}
 

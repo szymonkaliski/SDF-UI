@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classNames from 'classnames';
 import enhanceWithClickOutside from 'react-click-outside';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import nodeSpecs from '../../engine/nodes';
@@ -95,8 +96,6 @@ class EditorEdges extends Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  deleteEdge: (id) => dispatch(deleteEdge(id))
-});
+const mapDispatchToProps = (dispatch) => bindActionCreators({ deleteEdge }, dispatch);
 
 export default connect(null, mapDispatchToProps)(enhanceWithClickOutside(EditorEdges));

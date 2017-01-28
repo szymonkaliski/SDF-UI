@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import EditorEdges from './editor-edges';
@@ -84,8 +85,6 @@ const mapStateToProps = (state) => ({
   windowSize: state.get('windowSize')
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  addNode: (nodeType, pos) => dispatch(addNode(nodeType, pos))
-});
+const mapDispatchToProps = (dispatch) => bindActionCreators({ addNode }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Editor);

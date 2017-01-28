@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { Node, Shaders } from 'gl-react';
 import { Surface } from 'gl-react-dom';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { setCamera } from '../../actions/preview';
 
 import './index.css';
+
+const getTime = () => (new Date()).getTime();
 
 class Preview extends Component {
   constructor() {
@@ -14,6 +17,16 @@ class Preview extends Component {
     this.onRef       = this.onRef.bind(this);
     this.onScroll    = this.onScroll.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
+
+    this.start = getTime();
+    this.state = { time: getTime() - this.start };
+  }
+
+  componentDidMount() {
+    // this should probably be handled with requestAnimationFrame
+    this.interval = setInterval(() => {
+      this.setState({ time: getTime() - this.start });
+    }, 16);
   }
 
   onScroll(e) {
@@ -58,9 +71,11 @@ class Preview extends Component {
 
   componentWillUmount() {
     this.ref.removeEventListener('mousewheel', this.onScroll);
+    clearInterval(this.interval);
   }
 
   render() {
+    const { time } = this.state;
     const { windowSize, camera, fragment } = this.props;
 
     const width  = windowSize.get('width');
@@ -80,6 +95,7 @@ class Preview extends Component {
             uniforms={{
               width: width / 2,
               height,
+              time,
               camRotation: camera.get('rotation'),
               camHeight: camera.get('height'),
               camDist: camera.get('dist')
@@ -97,8 +113,6 @@ const mapStateToProps = (state) => ({
   windowSize: state.get('windowSize')
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  setCamera: (camera) => dispatch(setCamera(camera))
-});
+const mapDispatchToProps = (dispatch) => bindActionCreators({ setCamera }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Preview);

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { saveToFirebase } from '../../actions/firebase';
@@ -61,8 +62,6 @@ const mapStateToProps = (state) => ({
   fragment: state.get('fragment')
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  saveToFirebase: () => dispatch(saveToFirebase())
-});
+const mapDispatchToProps = (dispatch) => bindActionCreators({ saveToFirebase }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

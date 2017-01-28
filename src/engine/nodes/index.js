@@ -23,8 +23,17 @@ import opUnionRound from './op-union-round';
 import uiFloat from './ui-float';
 import uiPack3 from './ui-pack3';
 
+import mathAdd from './math-add';
+import mathSub from './math-sub';
+import mathMult from './math-mult';
+import mathDiv from './math-div';
+import mathSin from './math-sin';
+import mathCos from './math-cos';
+import mathAbs from './math-abs';
+
 import sysInput from './sys-input';
 import sysOutput from './sys-output';
+import sysTime from './sys-time';
 
 export default {
   sdBox,
@@ -52,6 +61,15 @@ export default {
   uiFloat,
   uiPack3,
 
+  mathAdd,
+  mathSub,
+  mathMult,
+  mathDiv,
+  mathSin,
+  mathCos,
+  mathAbs,
+
+  sysTime,
   sysInput,
   sysOutput
 };
