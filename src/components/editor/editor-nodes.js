@@ -14,6 +14,7 @@ import {
 } from '../../actions/graph';
 
 const EditorNodes = ({
+  contentRef,
   nodes,
   moveNode,
   deleteNode,
@@ -31,6 +32,7 @@ const EditorNodes = ({
       y={ node.get('y') }
       metadata={ node.get('metadata') }
       type={ node.get('type') }
+      contentRef={ contentRef }
       onMove={ (pos) => moveNode(id, pos) }
       onDelete={ () => deleteNode(id) }
       onUpdateMetadata={ (metadata) => updateNodeMetadata(id, metadata) }

@@ -57,18 +57,21 @@ class EditorNode extends Component {
   }
 
   onMouseDown(e, callbacks) {
-    this.clickX = e.clientX - this.props.x;
-    this.clickY = e.clientY - this.props.y;
+    // adjust for scroll position of editor content
+    const boundingRect = this.props.contentRef.getBoundingClientRect();
+
+    this.clickX = e.clientX - this.props.x - boundingRect.left;
+    this.clickY = e.clientY - this.props.y - boundingRect.top;
 
     const onDrag = (e) => {
       callbacks.onDrag({
         relative: {
-          x: e.clientX - this.clickX,
-          y: e.clientY - this.clickY
+          x: e.clientX - this.clickX - boundingRect.left,
+          y: e.clientY - this.clickY - boundingRect.top
         },
         absolute: {
-          x: e.clientX,
-          y: e.clientY
+          x: e.clientX - boundingRect.left,
+          y: e.clientY - boundingRect.top
         }
       });
     };

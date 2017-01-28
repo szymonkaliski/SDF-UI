@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import raf from 'raf';
 import { Node, Shaders } from 'gl-react';
 import { Surface } from 'gl-react-dom';
 import { bindActionCreators } from 'redux';
@@ -8,8 +9,6 @@ import { setCamera } from '../../actions/preview';
 
 import './index.css';
 
-const getTime = () => (new Date()).getTime();
-
 class Preview extends Component {
   constructor() {
     super();
@@ -18,15 +17,38 @@ class Preview extends Component {
     this.onScroll    = this.onScroll.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
 
-    this.start = getTime();
-    this.state = { time: getTime() - this.start };
+    this.state = { time: 0 };
   }
 
   componentDidMount() {
-    // this should probably be handled with requestAnimationFrame
-    this.interval = setInterval(() => {
-      this.setState({ time: getTime() - this.start });
-    }, 16);
+    const interval = 1000 / 60; // 60 FPS
+
+    let start, last = 0;
+
+    const loop = (t) => {
+      if (!start) { start = t; }
+
+      if (t - last > interval) {
+        last = t;
+        this.setState({ time: t - start });
+      }
+
+      raf(loop);
+    };
+
+    this.handle = raf(loop);
+  }
+
+  componentWillUmount() {
+    raf.cancel(this.handle);
+
+    this.ref.removeEventListener('mousewheel', this.onScroll);
+  }
+
+  onRef(ref) {
+    this.ref = ref;
+
+    this.ref.addEventListener('mousewheel', this.onScroll);
   }
 
   onScroll(e) {
@@ -61,17 +83,6 @@ class Preview extends Component {
 
     window.addEventListener('mousemove', onDrag);
     window.addEventListener('mouseup', onUp);
-  }
-
-  onRef(ref) {
-    this.ref = ref;
-
-    this.ref.addEventListener('mousewheel', this.onScroll);
-  }
-
-  componentWillUmount() {
-    this.ref.removeEventListener('mousewheel', this.onScroll);
-    clearInterval(this.interval);
   }
 
   render() {

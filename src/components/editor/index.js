@@ -20,9 +20,10 @@ class Editor extends Component {
       mousePos:     undefined
     };
 
-    this.onDoubleClick  = this.onDoubleClick.bind(this);
-    this.onAddNode      = this.onAddNode.bind(this);
-    this.onCloseAddNode = this.onCloseAddNode.bind(this);
+    this.onDoubleClick      = this.onDoubleClick.bind(this);
+    this.onAddNode          = this.onAddNode.bind(this);
+    this.onCloseAddNode     = this.onCloseAddNode.bind(this);
+    this.onEditorContentRef = this.onEditorContentRef.bind(this);
   }
 
   onDoubleClick({ clientX, clientY, target }) {
@@ -35,7 +36,14 @@ class Editor extends Component {
   }
 
   onAddNode(nodeType) {
-    this.props.addNode(nodeType, this.state.mousePos);
+    // adjust for scroll position of editor content
+    const boundingRect = this.state.refEditorContent.getBoundingClientRect();
+
+    this.props.addNode(nodeType, {
+      x: this.state.mousePos.x - boundingRect.left,
+      y: this.state.mousePos.y - boundingRect.top
+    });
+
     this.setState({ newNodePopup: false, mousePos: undefined });
   }
 
@@ -43,9 +51,14 @@ class Editor extends Component {
     this.setState({ newNodePopup: false, mousePos: undefined });
   }
 
+  onEditorContentRef(ref) {
+    // this ref is used for dragging connecting when editor content is scrolled
+    this.setState({ refEditorContent: ref });
+  }
+
   render() {
-    const { newNodePopup, mousePos }   = this.state;
-    const { edges, nodes, windowSize } = this.props;
+    const { newNodePopup, mousePos, refEditorContent } = this.state;
+    const { edges, nodes, windowSize }                 = this.props;
 
     const width  = windowSize.get('width');
     const height = windowSize.get('height');
@@ -64,9 +77,9 @@ class Editor extends Component {
     };
 
     return <div className='editor' onDoubleClick={ this.onDoubleClick } style={{ width: width / 2, height }}>
-      <div className='editor__content' style={{ width: contentWidth, height }}>
+      <div className='editor__content' style={{ width: contentWidth, height }} ref={ this.onEditorContentRef }>
         <EditorEdges edges={ edges } nodes={ nodes } width={ contentWidth } height={ contentHeight }/>
-        <EditorNodes nodes={ nodes }/>
+        <EditorNodes nodes={ nodes } contentRef={ refEditorContent }/>
         {
           newNodePopup && <NewNode
             pos={ popupPos }
