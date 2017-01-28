@@ -1,5 +1,61 @@
 .navbar {
   position: absolute;
-  top: 10px;
-  left: 10px;
+  top: 0;
+  left: 0;
+}
+
+.navbar__item {
+  display: inline-block;
+  width: 40px;
+  text-align: center;
+
+  color: #1b1b1b;
+  background: #606060;
+
+  padding: 6px;
+  cursor: pointer;
+}
+
+.navbar__item:hover {
+  background: #909090;
+}
+
+.overlay__wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background: rgba(0,0,0,0.7);
+  color: #606060;
+}
+
+.overlay {
+  width: 80%;
+  height: 80%;
+  overflow: auto;
+  margin: auto;
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  overflow: scroll;
+}
+
+.overlay__close {
+  float: right;
+
+  color: #1b1b1b;
+  background: #606060;
+
+  padding: 6px;
+  cursor: pointer;
+}
+
+.overlay__close:hover {
+  background: #909090;
 }

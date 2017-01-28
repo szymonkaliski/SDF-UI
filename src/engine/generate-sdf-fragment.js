@@ -10,17 +10,11 @@ uniform float camDist;
 
 const int SDF_STEPS = 100;
 
-// INJECTED
-
 ${inject.join('\n')}
-
-// MODEL
 
 vec2 doModel(vec3 p) {
   return vec2(${model}, 0.0);
 }
-
-// HELPERS
 
 vec2 calcRayIntersection(vec3 rayOrigin, vec3 rayDir, float maxd, float precis) {
   float latest = precis * 2.0;

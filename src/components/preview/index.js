@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import { Node, Shaders } from 'gl-react';
 import { Surface } from 'gl-react-dom';
 import { connect } from 'react-redux';
-import { fromJS } from 'immutable';
-
-import compileGraph from '../../engine/compile-graph';
-import generateSDFFragment from '../../engine/generate-sdf-fragment';
 
 import { setCamera } from '../../actions/preview';
 
@@ -65,25 +61,20 @@ class Preview extends Component {
   }
 
   render() {
-    const { windowSize, nodes, edges, camera } = this.props;
+    const { windowSize, camera, fragment } = this.props;
 
-    const width    = windowSize.get('width');
-    const height   = windowSize.get('height');
-    const compiled = compileGraph({ nodes, edges });
+    const width  = windowSize.get('width');
+    const height = windowSize.get('height');
 
     let shaders;
 
-    if (compiled) {
-      const frag = generateSDFFragment(compiled);
-      shaders = Shaders.create({ sdf: { frag } });
-
-      // console.log(compiled);
-      // console.log(frag);
+    if (fragment) {
+      shaders = Shaders.create({ sdf: { frag: fragment } });
     }
 
     return <div className='preview' style={{ width: width / 2 }} ref={ this.onRef } onMouseDown={ this.onMouseDown }>
       {
-        compiled && <Surface width={ width / 2 } height={ height }>
+        fragment && <Surface width={ width / 2 } height={ height }>
           <Node
             shader={ shaders.sdf }
             uniforms={{
@@ -100,16 +91,8 @@ class Preview extends Component {
   }
 };
 
-const pick = (map, args) => {
-  return fromJS(args.reduce((memo, arg) => ({
-    ...memo,
-    [arg]: map.get(arg)
-  }), {}))
-};
-
 const mapStateToProps = (state) => ({
-  nodes:      state.get('nodes').map(node => pick(node, [ 'id', 'type', 'metadata' ])),
-  edges:      state.get('edges').delete('dragging'),
+  fragment:   state.get('fragment'),
   camera:     state.get('camera'),
   windowSize: state.get('windowSize')
 });
@@ -118,6 +101,4 @@ const mapDispatchToProps = (dispatch) => ({
   setCamera: (camera) => dispatch(setCamera(camera))
 });
 
-const areStatePropsEqual = (a, b) => [ 'nodes', 'edges', 'windowSize', 'camera' ].every(key => a[key].equals(b[key]));
-
-export default connect(mapStateToProps, mapDispatchToProps, null, { pure: true, areStatePropsEqual })(Preview);
+export default connect(mapStateToProps, mapDispatchToProps)(Preview);
