@@ -15,3 +15,7 @@ export const setCamera = (state, { rotation, height, dist }) => {
   const camera = removeEmptyVals({ rotation, height, dist });
   return state.mergeIn([ 'camera' ], fromJS(camera));
 };
+
+export const toggleFullscreen = (state) => {
+  return state.set('fullscreen', !state.get('fullscreen'));
+}

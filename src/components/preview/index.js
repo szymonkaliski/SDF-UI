@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import autobind from 'react-autobind';
 import raf from 'raf';
 import { Node, Shaders } from 'gl-react';
 import { Surface } from 'gl-react-dom';
@@ -13,11 +14,9 @@ class Preview extends Component {
   constructor() {
     super();
 
-    this.onRef       = this.onRef.bind(this);
-    this.onScroll    = this.onScroll.bind(this);
-    this.onMouseDown = this.onMouseDown.bind(this);
-
     this.state = { time: 0 };
+
+    autobind(this);
   }
 
   componentDidMount() {
@@ -87,10 +86,11 @@ class Preview extends Component {
 
   render() {
     const { time } = this.state;
-    const { windowSize, camera, fragment } = this.props;
+    const { windowSize, camera, fragment, fullscreen } = this.props;
 
-    const width  = windowSize.get('width');
-    const height = windowSize.get('height');
+    const winWidth = windowSize.get('width')
+    const width    = fullscreen ? winWidth : winWidth / 2;
+    const height   = windowSize.get('height');
 
     let shaders;
 
@@ -98,13 +98,13 @@ class Preview extends Component {
       shaders = Shaders.create({ sdf: { frag: fragment } });
     }
 
-    return <div className='preview' style={{ width: width / 2 }} ref={ this.onRef } onMouseDown={ this.onMouseDown }>
+    return <div className='preview' style={{ width }} ref={ this.onRef } onMouseDown={ this.onMouseDown }>
       {
-        fragment && <Surface width={ width / 2 } height={ height }>
+        fragment && <Surface width={ width } height={ height }>
           <Node
             shader={ shaders.sdf }
             uniforms={{
-              width: width / 2,
+              width,
               height,
               time,
               camRotation: camera.get('rotation'),
@@ -121,7 +121,8 @@ class Preview extends Component {
 const mapStateToProps = (state) => ({
   fragment:   state.get('fragment'),
   camera:     state.get('camera'),
-  windowSize: state.get('windowSize')
+  windowSize: state.get('windowSize'),
+  fullscreen: state.get('fullscreen')
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ setCamera }, dispatch);

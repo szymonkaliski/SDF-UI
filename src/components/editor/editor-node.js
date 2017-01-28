@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import autobind from 'react-autobind';
 import classNames from 'classnames';
 import enhanceWithClickOutside from 'react-click-outside';
 
@@ -17,11 +18,7 @@ class EditorNode extends Component {
 
     this.state = { selected: false };
 
-    this.onMouseDown       = this.onMouseDown.bind(this);
-    this.onMouseDownNode   = this.onMouseDownNode.bind(this);
-    this.onMouseDownOutlet = this.onMouseDownOutlet.bind(this);
-    this.onKeyDown         = this.onKeyDown.bind(this);
-    this.onUpdateMetadata  = this.onUpdateMetadata.bind(this);
+    autobind(this);
   }
 
   componentDidMount() {

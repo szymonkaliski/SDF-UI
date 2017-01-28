@@ -19,7 +19,8 @@ import {
 } from './window-size';
 
 import {
-  setCamera
+  setCamera,
+  toggleFullscreen
 } from './preview';
 
 import {
@@ -54,7 +55,8 @@ const initialState = parsed ? fromJS(parsed) : fromJS({
   windowSize:  { width: 0, height: 0 },
   camera:      { rotation: 0, height: 0, dist: 5 },
   databaseKey: undefined,
-  fragment:    undefined
+  fragment:    undefined,
+  fullscreen:  false
 });
 
 const actions = {
@@ -69,6 +71,7 @@ const actions = {
   DELETE_EDGE:             deleteEdge,
 
   SET_CAMERA:              setCamera,
+  TOGGLE_FULLSCREEN:       toggleFullscreen,
 
   UPDATE_WINDOW_SIZE:      updateWindowSize,
 

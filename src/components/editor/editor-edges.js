@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import autobind from 'react-autobind';
 import classNames from 'classnames';
 import enhanceWithClickOutside from 'react-click-outside';
 import { bindActionCreators } from 'redux';
@@ -14,16 +15,13 @@ import './editor-edges.css';
 
 const prop = (key) => (obj) => obj[key];
 
-// TODO: export Edge and Edges, same as Node and Nodes
-
 class EditorEdges extends Component {
   constructor() {
     super();
 
     this.state = { selectedId: undefined };
 
-    this.onClickEdge = this.onClickEdge.bind(this);
-    this.onKeyDown   = this.onKeyDown.bind(this);
+    autobind(this);
   }
 
   componentDidMount() {

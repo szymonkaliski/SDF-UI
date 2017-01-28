@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import autobind from 'react-autobind';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -20,10 +21,7 @@ class Editor extends Component {
       mousePos:     undefined
     };
 
-    this.onDoubleClick      = this.onDoubleClick.bind(this);
-    this.onAddNode          = this.onAddNode.bind(this);
-    this.onCloseAddNode     = this.onCloseAddNode.bind(this);
-    this.onEditorContentRef = this.onEditorContentRef.bind(this);
+    autobind(this);
   }
 
   onDoubleClick({ clientX, clientY, target }) {

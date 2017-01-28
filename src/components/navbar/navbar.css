@@ -2,6 +2,8 @@
   position: absolute;
   top: 0;
   left: 0;
+
+  user-select: none;
 }
 
 .navbar__item {
@@ -47,7 +49,7 @@
 }
 
 .overlay__close {
-  float: right;
+  float: left;
 
   color: #1b1b1b;
   background: #606060;

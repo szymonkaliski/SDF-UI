@@ -4,3 +4,7 @@ export const setCamera = ({ rotation, height, dist }) => ({
   height,
   dist
 });
+
+export const toggleFullscreen = () => ({
+  type: 'TOGGLE_FULLSCREEN'
+});
