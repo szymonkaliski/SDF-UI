@@ -1,0 +1,21 @@
+.help__h1 {
+  font-size: 18px;
+  color: #808080;
+}
+
+.help__list {
+  list-style-type: square;
+  padding-left: 18px;
+}
+
+.help__link {
+  color: #808080;
+}
+
+.help__link:hover {
+  color: #606060;
+}
+
+.help__bright {
+  color: #808080;
+}

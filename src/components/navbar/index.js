@@ -6,18 +6,10 @@ import { connect } from 'react-redux';
 import { saveToFirebase } from '../../actions/firebase';
 import { toggleFullscreen } from '../../actions/preview';
 
-import './navbar.css';
+import Help from './help';
+import Overlay from './overlay';
 
-const Overlay = ({ content, onClickClose }) => {
-  return <div className='overlay__wrapper'>
-    <div className='overlay__close' onClick={ onClickClose }>
-      CLOSE
-    </div>
-    <div className='overlay'>
-      { content }
-    </div>
-  </div>;
-};
+import './navbar.css';
 
 class Navbar extends Component {
   constructor() {
@@ -59,7 +51,7 @@ class Navbar extends Component {
       <div className='navbar__item' onClick={ () => this.onClickToggleOverlay('glslVisible') }>GLSL</div>
       <div className='navbar__item' onClick={ this.onClickFullscreen }>FS</div>
 
-      { this.state.helpVisible && <Overlay onClickClose={ this.onClickCloseOverlay } content='test' /> }
+      { this.state.helpVisible && <Overlay onClickClose={ this.onClickCloseOverlay } content={ <Help/> } /> }
       { this.state.glslVisible && <Overlay onClickClose={ this.onClickCloseOverlay } content={ this.renderGLSLOverlay() } /> }
     </div>;
   }
