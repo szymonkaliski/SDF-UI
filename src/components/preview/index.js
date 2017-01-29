@@ -27,7 +27,7 @@ class Preview extends Component {
     const loop = (t) => {
       if (!start) { start = t; }
 
-      if (t - last > interval) {
+      if (t - last > interval && this.props.usesTime) {
         last = t;
         this.setState({ time: t - start });
       }
@@ -86,7 +86,7 @@ class Preview extends Component {
 
   render() {
     const { time } = this.state;
-    const { windowSize, camera, fragment, fullscreen } = this.props;
+    const { windowSize, camera, fragment, fullscreen, usesTime } = this.props;
 
     const winWidth = windowSize.get('width')
     const width    = fullscreen ? winWidth : winWidth / 2;
@@ -106,10 +106,10 @@ class Preview extends Component {
             uniforms={{
               width,
               height,
-              time,
               camRotation: camera.get('rotation'),
               camHeight: camera.get('height'),
-              camDist: camera.get('dist')
+              camDist: camera.get('dist'),
+              ...usesTime ? { time } : undefined
             }}
           />
         </Surface>
@@ -122,7 +122,8 @@ const mapStateToProps = (state) => ({
   fragment:   state.get('fragment'),
   camera:     state.get('camera'),
   windowSize: state.get('windowSize'),
-  fullscreen: state.get('fullscreen')
+  fullscreen: state.get('fullscreen'),
+  usesTime:   !!state.get('nodes').find(node => node.get('type') === 'sysTime')
 });
 
 const mapDispatchToProps = (dispatch) => bindActionCreators({ setCamera }, dispatch);

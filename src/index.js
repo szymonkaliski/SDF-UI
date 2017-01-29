@@ -48,7 +48,9 @@ class App extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.databaseKey) {
+    const urlId = get(querystring.parse(window.location.search.replace('?', '')), 'id');
+
+    if (nextProps.databaseKey !== urlId) {
       const queryString = `?id=${nextProps.databaseKey}`;
 
       if (history.pushState) {

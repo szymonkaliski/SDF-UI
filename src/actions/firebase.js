@@ -8,12 +8,19 @@ export const saveToFirebaseDone = (key) => ({
 export const saveToFirebase = () => (dispatch, getState) => {
   const state = getState();
 
-  const data = [ 'nodes', 'edges', 'camera' ].reduce((memo, key) => {
+  // save nodes, edges and camera into db
+  let data = [ 'nodes', 'edges', 'camera' ].reduce((memo, key) => {
     return {
       ...memo,
       [key]: state.get(key).toJS()
     };
   }, {});
+
+  // save parent ID if there's one
+  const parentId = state.get('databaseKey');
+  if (parentId) {
+    data = { ...data, parentId };
+  }
 
   firebase
     .database()
@@ -24,9 +31,10 @@ export const saveToFirebase = () => (dispatch, getState) => {
     });
 };
 
-export const readFromFirebaseDone = (data) => ({
+export const readFromFirebaseDone = ({ data, key }) => ({
   type: 'READ_FROM_FIREBASE_DONE',
-  data
+  data,
+  key
 });
 
 export const readFromFirebase = (id) => (dispatch) => {
@@ -35,7 +43,10 @@ export const readFromFirebase = (id) => (dispatch) => {
     .ref(`graphs/${id}`)
     .once('value')
     .then(snap => {
-      dispatch(readFromFirebaseDone(snap.val()));
+      dispatch(readFromFirebaseDone({
+        key:  snap.key,
+        data: snap.val()
+      }));
     });
 };
 
