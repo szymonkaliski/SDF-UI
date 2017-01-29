@@ -24,13 +24,16 @@ class EditorNode extends Component {
   componentDidMount() {
     const { x, y } = this.props;
 
+    // adjust for scroll position of editor content
+    const boundingRect = this.props.contentRef.getBoundingClientRect();
+
     const inletsPositions = Object.keys(this.inletsDivs).reduce((memo, key) => {
       const rect = this.inletsDivs[key].getBoundingClientRect();
 
       return Object.assign(memo, {
         [key]: {
-          x: rect.left - x + rect.width / 2,
-          y: rect.top  - y
+          x: rect.left - boundingRect.left - x + rect.width / 2,
+          y: rect.top  - boundingRect.top  - y
         }
       });
     }, {});
