@@ -1,6 +1,8 @@
 .new_node {
   position: fixed;
   width: 140px;
+  max-height: 280px;
+  overflow: scroll;
 }
 
 .new_node__input,

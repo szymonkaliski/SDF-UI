@@ -71,7 +71,7 @@ class Editor extends Component {
 
     const popupPos = mousePos && {
       x: Math.min(mousePos.x, width / 2 - 160),
-      y: Math.min(mousePos.y, height - Object.keys(nodeSpecs).length * 24- 20)
+      y: Math.min(mousePos.y, height - Math.min(280, Object.keys(nodeSpecs).length * 24) - 20)
     };
 
     return <div className='editor' onDoubleClick={ this.onDoubleClick } style={{ width: width / 2, height }}>
