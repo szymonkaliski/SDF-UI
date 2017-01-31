@@ -45,7 +45,7 @@ export default () => {
     <ul className='help__list'>
       <li>to create node double click on empty space in editor pane (left side of the window)</li>
       <li>to connect nodes drag edge from one node outlet, to matching (<span className='help__bright'>f</span> to <span className='help__bright'>f</span> and <span className='help__bright'>3</span> to <span className='help__bright'>3</span>) and free inlet of another node</li>
-      <li>to delete node or edge select it, and hit <span className='help__bright'>delete</span> on keyboard</li>
+      <li>to delete node or edge select it, and hit <span className='help__bright'>backspace</span> on keyboard</li>
     </ul>
 
     <p>
