@@ -76,15 +76,19 @@ class Editor extends Component {
 
     return <div className='editor' onDoubleClick={ this.onDoubleClick } style={{ width: width / 2, height }}>
       <div className='editor__content' style={{ width: contentWidth, height }} ref={ this.onEditorContentRef }>
-        <EditorEdges edges={ edges } nodes={ nodes } width={ contentWidth } height={ contentHeight }/>
-        <EditorNodes nodes={ nodes } contentRef={ refEditorContent }/>
-        {
-          newNodePopup && <NewNode
-            pos={ popupPos }
-            onSelectNode={ this.onAddNode }
-            onRequestClose={ this.onCloseAddNode }
-          />
-        }
+        { refEditorContent && (
+          <div>
+            <EditorEdges edges={ edges } nodes={ nodes } width={ contentWidth } height={ contentHeight }/>
+            <EditorNodes nodes={ nodes } contentRef={ refEditorContent }/>
+            {
+              newNodePopup && <NewNode
+                pos={ popupPos }
+                onSelectNode={ this.onAddNode }
+                onRequestClose={ this.onCloseAddNode }
+              />
+            }
+          </div>
+        ) }
       </div>
     </div>
   }

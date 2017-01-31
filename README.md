@@ -23,5 +23,5 @@ Most of the code is intentionally left without any optimisations, to be used as 
 
 - [ ] make math operations work on vec3 as well as float - this will require inputs that can accept both floats and vec3s
 - [ ] add a way to "unpack" vec3 into three floats, process them, and pack again
-
+- [ ] overwrite connections instead of blocking if there's already one made
 

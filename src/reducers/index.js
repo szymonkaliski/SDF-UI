@@ -1,4 +1,5 @@
 import { fromJS } from 'immutable';
+import { randomId } from './utils';
 
 import {
   addNode,
@@ -49,15 +50,36 @@ if (isDebug) {
   }
 }
 
-const initialState = parsed ? fromJS(parsed) : fromJS({
-  nodes:       {},
-  edges:       {},
-  windowSize:  { width: 0, height: 0 },
-  camera:      { rotation: 0, height: 0, dist: 5 },
-  databaseKey: undefined,
-  fragment:    undefined,
-  fullscreen:  false
-});
+const generateInitialState = () => {
+  const sysInputId  = randomId();
+  const sysOutputId = randomId();
+  const sdSphereId     = randomId();
+  const edge1Id     = randomId();
+  const edge2Id     = randomId();
+
+  const nodes = {
+    [sysInputId]:  { id: sysInputId,  x: 100, y: 100, type: "sysInput"  },
+    [sysOutputId]: { id: sysOutputId, x: 100, y: 500, type: "sysOutput" },
+    [sdSphereId]:  { id: sdSphereId,  x: 100, y: 300, type: "sdSphere"  },
+  };
+
+  const edges = {
+    [edge1Id]: { id: edge1Id, from: { id: sysInputId }, to: { id: sdSphereId,  inlet: 'p' } },
+    [edge2Id]: { id: edge2Id, from: { id: sdSphereId }, to: { id: sysOutputId, inlet: 'd' } },
+  };
+
+  return {
+    nodes,
+    edges,
+    windowSize:  { width: 0, height: 0 },
+    camera:      { rotation: 0, height: 0, dist: 5 },
+    databaseKey: undefined,
+    fragment:    undefined,
+    fullscreen:  false
+  };
+};
+
+const initialState = fromJS(parsed || generateInitialState());
 
 const actions = {
   ADD_NODE:                addNode,

@@ -22,6 +22,7 @@
   right: 0;
 
   overflow: scroll;
+  user-select: initial;
 }
 
 .overlay__close {

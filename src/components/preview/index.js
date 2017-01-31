@@ -88,9 +88,13 @@ class Preview extends Component {
     const { time } = this.state;
     const { windowSize, camera, fragment, fullscreen, usesTime } = this.props;
 
-    const winWidth = windowSize.get('width')
-    const width    = fullscreen ? winWidth : winWidth / 2;
-    const height   = windowSize.get('height');
+    // TODO: test if this works,
+    // I don't have retina screen
+    const pixelRatio = Number(window.devicePixelRatio || 1);
+
+    const winWidth   = windowSize.get('width')
+    const width      = fullscreen ? winWidth : winWidth / 2;
+    const height     = windowSize.get('height');
 
     let shaders;
 
@@ -104,11 +108,11 @@ class Preview extends Component {
           <Node
             shader={ shaders.sdf }
             uniforms={{
-              width,
-              height,
+              width:       width * pixelRatio,
+              height:      height * pixelRatio,
               camRotation: camera.get('rotation'),
-              camHeight: camera.get('height'),
-              camDist: camera.get('dist'),
+              camHeight:   camera.get('height'),
+              camDist:     camera.get('dist'),
               ...usesTime ? { time } : undefined
             }}
           />
