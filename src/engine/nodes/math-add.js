@@ -9,5 +9,5 @@ export default generateNode({
     outlet: { id: 'f', type: 'float' }
   },
 
-  generate: ({ a, b }) => `${a} + ${b}`
+  generate: ({ a, b }) => `((${a}) + (${b}))`
 });

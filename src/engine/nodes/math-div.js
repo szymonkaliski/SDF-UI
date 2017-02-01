@@ -9,5 +9,5 @@ export default generateNode({
     outlet: { id: 'f', type: 'float' }
   },
 
-  generate: ({ a, b }) => Math.abs(parseFloat(b)) > 0.0001 ? `${a} / ${b}` : '0.0'
+  generate: ({ a, b }) => Math.abs(parseFloat(b)) > 0.0001 ? `((${a}) / (${b}))` : '0.0'
 });
